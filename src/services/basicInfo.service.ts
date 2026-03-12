@@ -1,0 +1,17 @@
+import Api from '../lib/api';
+
+const dummy = new Api({
+    baseUrl: 'http://localhost:4001',
+    xApiKey: '',
+});
+
+export const createBasicInfo = async (data: any) => {
+    const response = await dummy.post('/basicInfo', data);
+    console.log(response)
+    return response;
+};
+
+export const showBasicInfo = async () => {
+    const response = await dummy.get('/basicInfo');
+    return response;
+};

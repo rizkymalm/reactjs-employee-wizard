@@ -1,21 +1,30 @@
 {
-    "departments": [
-        {
-            "id": 1,
-            "name": "Lending"
-        },
-        {
-            "id": 2,
-            "name": "Funding"
-        },
-        {
-            "id": 3,
-            "name": "Operations"
-        },
-        {
-            "id": 4,
-            "name": "Engineering"
-        }
-    ],
-    "basicInfo": []
+  "departments": [
+    {
+      "id": "1",
+      "name": "Lending"
+    },
+    {
+      "id": "2",
+      "name": "Funding"
+    },
+    {
+      "id": "3",
+      "name": "Operations"
+    },
+    {
+      "id": "4",
+      "name": "Engineering"
+    }
+  ],
+  "basicInfo": [
+    {
+      "id": "2974",
+      "fullName": "Rizki Malem",
+      "email": "rizkymalm@gmail.com",
+      "department": "Lending",
+      "role": "Admin"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }

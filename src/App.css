@@ -47,7 +47,7 @@
 /* container */
 .container {
   background-color: #FFFFFF;
-  min-width: 500px;
+  width: 500px;
   min-height: 100vh;
   display: flex;
   padding: 2rem;

@@ -21,6 +21,7 @@
 .button:disabled {
     color: var(--muted) !important;
     border-color: var(--muted) !important;
+    background-color: transparent !important;
 }
 
 .button.contained {

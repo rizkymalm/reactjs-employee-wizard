@@ -1,0 +1,61 @@
+:root {
+    --error: #EF4444;
+}
+
+.border-error {
+    border-color: var(--error) !important;
+}
+
+.textfield {
+    margin: 8px auto;
+}
+
+.textfield > .wrapper {
+    width: 100%;
+    display: inline-flex;
+    gap: 0.25rem;
+    border-radius: 4px;
+    background-color: #FAFAFB;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #CFCFCF;
+    color: #1C1C1E;
+    align-items: center;
+}
+
+.textfield > .wrapper:focus-within {
+    border-bottom-width: 2px;
+    border-color: #4ADE80;
+    border-style: solid;
+}
+
+.textfield > .wrapper:focus-visible {
+    outline: none;
+}
+
+.textfield input {
+    width: 100%;
+    text-align: left;
+    border: none;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    background-color: transparent;
+}
+
+.textfield input:focus-visible {
+    outline: none;
+}
+
+.textfield.content-texfield {
+    margin: auto;
+    box-sizing: border-box;
+}
+
+.textfield > .helpertext {
+    font-size: 10px;
+    font-weight: 500;
+    text-align: left;
+    color: var(--error);
+}

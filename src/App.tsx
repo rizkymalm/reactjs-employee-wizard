@@ -5,7 +5,9 @@ import Router from './routes';
 function App() {
     return (
         <BrowserRouter>
-            <Router />
+            <div className="container">
+                <Router />
+            </div>
         </BrowserRouter>
     );
 }

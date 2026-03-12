@@ -1,0 +1,80 @@
+/* set variables */
+.button {
+    --primary: #22C55E;
+    --primary-hover: rgba(34, 197, 94, .2);
+    --muted: #CFCFCF;
+    --text-dark: #1C1C1E;
+    --text-light: #F5F5F7;
+}
+
+.button {
+    display: flex;
+    gap: 4px;
+    border-radius: 8px;
+    justify-content: center;
+}
+
+.button:disabled {
+    cursor: not-allowed;
+}
+
+.button:disabled {
+    color: var(--muted) !important;
+    border-color: var(--muted) !important;
+}
+
+.button.contained {
+    color: var(--text-light);
+    border: 2px solid var(--primary);
+    background-color: var(--primary);
+}
+
+.button.outline {
+    color: var(--text-dark);
+    background-color: transparent;
+    border: 2px solid var(--primary);
+}
+
+.button.texted {
+    color: var(--text-dark);
+    background-color: transparent;
+    border: 2px solid;
+    border-color: transparent;
+}
+
+.button.outline:hover {
+    background-color: var(--primary-hover);
+}
+
+.button.outline:active {
+    background-color: transparent;
+}
+
+.button.contained:hover {
+    background-color: var(--primary-hover);
+    color: var(--text-dark);
+}
+
+.button.texted:hover {
+    border: 2px solid var(--primary);
+}
+
+.button.texted:active {
+    border-color: transparent;
+}
+
+.button.size-sm {
+    font-size: 12px;
+    padding: 8px 14px;
+}
+
+.button.size-md {
+    font-size: 14px;
+    padding: 10px 16px;
+}
+
+.button.size-lg {
+    font-size: 15px;
+    padding: 12px 18px;
+    font-weight: bold;
+}

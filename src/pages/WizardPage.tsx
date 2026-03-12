@@ -1,14 +1,14 @@
 import React from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 const WizardPage = () => {
+    const [searchParams] = useSearchParams();
+    const role = searchParams.get('role');
     return (
         <div>
-            <div className="bg-red-800">
-                
-            </div>
+            <div className="bg-red-800"></div>
             <h1>Vite + React</h1>
             <div className="card">
-                
                 <p>
                     Edit <code>src/App.tsx</code> and save to test HMR
                 </p>

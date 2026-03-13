@@ -7,21 +7,26 @@
     --text-light: #F5F5F7;
 }
 
-.table-container
-
 .table-container {
     position: relative;
+    width: 100%;
 }
 
-.table-wrapper{
+.table-wrapper {
     border-collapse: collapse;
+    width: 100%;
 }
 
 .table-wrapper tr td,
 .table-wrapper tr th {
     padding: 10px 12px;
 }
-.table-wrapper tbody tr:hover{
+
+.table-wrapper tbody tr:nth-child(odd){
+    background-color: var(--text-light);
+}
+
+.table-wrapper tbody tr:hover {
     background-color: var(--muted);
 }
 
@@ -30,6 +35,58 @@
     top: 0;
 }
 
-.table-wrapper tbody{
+.table-wrapper tbody {
     font-size: 12px;
+}
+
+
+
+/* ===== pagination ===== */
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--text-light);
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+.pagination-row-selection {
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+}
+
+.pagination-row-content {
+    display: flex;
+    margin-left: 8px;
+    width: 64px;
+}
+
+.pagination-number {
+    font-size: 14px;
+    display: inline-flex;
+    --tw-space-x-reverse: 0;
+    margin-right: calc(-1px * var(--tw-space-x-reverse));
+    margin-left: calc(-1px * calc(1 - var(--tw-space-x-reverse)));
+}
+.pagination-number button{
+    display: flex;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    border: none;
+}
+.pagination-number button span{
+    border-radius: 9999px;
+    padding: 2px;
+}
+.pagination-number button span:hover{
+    background-color: var(--muted);
+}
+.pagination-number .pagination-center{
+    display: flex;
+    align-items: center;
+    padding-left: 2px;
+    padding-right: 2px;
 }

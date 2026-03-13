@@ -30,7 +30,12 @@ const EmployeeTableList = () => {
     }, [params]);
 
     return (
-        <div className="wrapper">
+        <div
+            className="wrapper"
+            style={{
+                margin: '4px',
+            }}
+        >
             <div className="table-container">
                 <table className="table-wrapper">
                     <thead>

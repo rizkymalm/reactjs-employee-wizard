@@ -10,13 +10,12 @@ import { Form, FormikProvider, useFormik } from 'formik';
 import { basicInfoSchema } from '../../utils/validation';
 import { BasicInfo } from '../../lib/types';
 import { useWizardState } from '../../hooks/useWizardState';
-import {
-    createBasicInfo,
-    getDepartments,
-} from '../../services/basicInfo.service';
+import { getDepartments } from '../../services/basicInfo.service';
 import { useDebounce } from '../../hooks/useDebounce';
 import { getDraft, saveDraft } from '../../utils/draftStorage';
 import Page from '../../components/Page';
+import { useRole } from '../../context/RoleContext';
+import { useNavigate } from 'react-router-dom';
 
 interface PropsOption {
     key: any;
@@ -48,6 +47,8 @@ const roleType = [
 ];
 
 const WizardStep1 = () => {
+    const navigate = useNavigate();
+    const { role } = useRole();
     const { setBasicInfo } = useWizardState();
     const draftStorage = getDraft('wizardstep1_draft');
     const [departments, setDepartments] = useState<PropsOption[]>([]);
@@ -81,7 +82,7 @@ const WizardStep1 = () => {
         validationSchema: basicInfoSchema,
         onSubmit: (values: BasicInfo) => {
             setBasicInfo(values);
-            createBasicInfo(values);
+            navigate(`/wizard/step-2?role=${role}`);
         },
     });
     const { handleSubmit, errors, touched, isValid, values } = formik;
@@ -99,7 +100,7 @@ const WizardStep1 = () => {
         <Page title="Wizard Step-1 | Basic Info">
             <div className="wrapper">
                 <FormikProvider value={formik}>
-                    <Form onSubmit={handleSubmit} style={{ width: '100%' }}>
+                    <Form onSubmit={handleSubmit} style={{ width: '60%' }}>
                         <Textfield
                             name="fullName"
                             fullWidth
@@ -148,7 +149,7 @@ const WizardStep1 = () => {
                         />
                         <Button
                             type="submit"
-                            text="Save Data"
+                            text={role === 'admin' ? 'Next' : 'Save Data'}
                             size="md"
                             variant="contained"
                             icon="mdi:content-save"

@@ -11,6 +11,7 @@ import { detailInfoSchema } from '../../utils/validation';
 import { createBasicInfo } from '../../services/basicInfo.service';
 import { DetailInfo } from '../../lib/types';
 import { getLocation } from '../../services/detail.service';
+import Page from '../../components/Page';
 
 interface PropsOption {
     key: any;
@@ -76,46 +77,43 @@ const WizardStep2 = () => {
     });
     const { handleSubmit, errors, touched, isValid, dirty } = formik;
     return (
-        <div
-            style={{
-                width: '80%',
-                margin: 'auto',
-            }}
-        >
-            <FormikProvider value={formik}>
-                <Form onSubmit={handleSubmit}>
-                    <FileUpload name="photo" />
-                    <SelectOption
-                        name="type"
-                        options={employementType}
-                        error={Boolean(touched.location && errors.location)}
-                        helperText={touched.location && errors.location}
-                    />
-                    <TextfieldAutocomplete
-                        options={location || []}
-                        onChange={(data: string) => setSearch(data)}
-                        onSelected={() => console.log('aaa')}
-                        fullWidth
-                    />
-                    <TextfieldArea
-                        name="notes"
-                        fullWidth
-                        onChange={formik.handleChange}
-                        error={Boolean(touched.notes && errors.notes)}
-                        helperText={touched.notes && errors.notes}
-                    />
-                    <Button
-                        type="submit"
-                        text="Save Data"
-                        size="md"
-                        variant="contained"
-                        icon="mdi:content-save"
-                        iconSize={16}
-                        disabled={!isValid || !dirty}
-                    />
-                </Form>
-            </FormikProvider>
-        </div>
+        <Page title="Wizard Step-2 | Basic Info">
+            <div className="wrapper">
+                <FormikProvider value={formik}>
+                    <Form onSubmit={handleSubmit} style={{ width: '60%' }}>
+                        <FileUpload name="photo" />
+                        <SelectOption
+                            name="type"
+                            options={employementType}
+                            error={Boolean(touched.location && errors.location)}
+                            helperText={touched.location && errors.location}
+                        />
+                        <TextfieldAutocomplete
+                            options={location || []}
+                            onChange={(data: string) => setSearch(data)}
+                            onSelected={() => console.log('aaa')}
+                            fullWidth
+                        />
+                        <TextfieldArea
+                            name="notes"
+                            fullWidth
+                            onChange={formik.handleChange}
+                            error={Boolean(touched.notes && errors.notes)}
+                            helperText={touched.notes && errors.notes}
+                        />
+                        <Button
+                            type="submit"
+                            text="Save Data"
+                            size="md"
+                            variant="contained"
+                            icon="mdi:content-save"
+                            iconSize={16}
+                            disabled={!isValid || !dirty}
+                        />
+                    </Form>
+                </FormikProvider>
+            </div>
+        </Page>
     );
 };
 

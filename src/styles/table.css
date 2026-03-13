@@ -22,7 +22,7 @@
     padding: 10px 12px;
 }
 
-.table-wrapper tbody tr:nth-child(odd){
+.table-wrapper tbody tr:nth-child(odd) {
     background-color: var(--text-light);
 }
 
@@ -33,6 +33,10 @@
 .table-wrapper thead {
     position: sticky;
     top: 0;
+}
+
+.table-wrapper thead tr {
+    background-color: var(--muted);
 }
 
 .table-wrapper tbody {
@@ -70,21 +74,25 @@
     margin-right: calc(-1px * var(--tw-space-x-reverse));
     margin-left: calc(-1px * calc(1 - var(--tw-space-x-reverse)));
 }
-.pagination-number button{
+
+.pagination-number button {
     display: flex;
     cursor: pointer;
     align-items: center;
     justify-content: center;
     border: none;
 }
-.pagination-number button span{
+
+.pagination-number button span {
     border-radius: 9999px;
     padding: 2px;
 }
-.pagination-number button span:hover{
+
+.pagination-number button span:hover {
     background-color: var(--muted);
 }
-.pagination-number .pagination-center{
+
+.pagination-number .pagination-center {
     display: flex;
     align-items: center;
     padding-left: 2px;

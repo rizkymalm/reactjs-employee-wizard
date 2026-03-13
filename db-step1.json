@@ -17,6 +17,35 @@
       "name": "Engineering"
     }
   ],
-  "basicInfo": [],
+  "basicInfo": [
+    {
+      "id": "c6b2",
+      "fullName": "RM",
+      "email": "rizkymalm@gmail.com",
+      "department": "Engineering",
+      "role": "Engineer"
+    },
+    {
+      "id": "1a3c",
+      "fullName": "Amajida Zahirah",
+      "email": "amajida@gmail.com",
+      "department": "Operations",
+      "role": "Ops"
+    },
+    {
+      "id": "38bf",
+      "fullName": "Rizki Malem",
+      "email": "rm@gmail.com",
+      "department": "Engineering",
+      "role": "Engineer"
+    },
+    {
+      "id": "5f20",
+      "fullName": "Rizki Malemm",
+      "email": "rmm@gmail.com",
+      "department": "Engineering",
+      "role": "Engineer"
+    }
+  ],
   "$schema": "./node_modules/json-server/schema.json"
 }

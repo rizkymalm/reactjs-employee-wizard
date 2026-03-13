@@ -1,23 +1,50 @@
-import Api from '../lib/api';
+import { apiFetch } from '../lib/api';
 
-const dummy = new Api({
-    baseUrl: 'http://localhost:4002',
-    xApiKey: '',
-});
+const baseUrl = 'http://localhost:4002';
 
-export const postDetail = async (data: any) => {
-    const response = await dummy.post('/details', data);
-    return response;
-};
-
-export const getDetail = async () => {
-    const response = await dummy.get('/details');
-    return response;
-};
-
-export const getLocation = async (queries?: any) => {
-    const response = await dummy.get('/locations', {
-        queries,
+export async function postDetail(data: any) {
+    const response = await apiFetch({
+        baseUrl: baseUrl,
+        endpoint: '/details',
+        method: 'POST',
+        data,
     });
     return response;
-};
+}
+
+export async function getDetail(params?: any) {
+    const response = await apiFetch({
+        baseUrl: baseUrl,
+        endpoint: '/departments',
+        method: 'GET',
+        params,
+    });
+    return response;
+}
+
+export async function getLocation(params?: any) {
+    const response = await apiFetch({
+        baseUrl: baseUrl,
+        endpoint: '/locations',
+        method: 'GET',
+        params,
+    });
+    return response;
+}
+
+// export const postDetail = async (data: any) => {
+//     const response = await dummy.post('/details', data);
+//     return response;
+// };
+
+// export const getDetail = async () => {
+//     const response = await dummy.get('/details');
+//     return response;
+// };
+
+// export const getLocation = async (queries?: any) => {
+//     const response = await dummy.get('/locations', {
+//         queries,
+//     });
+//     return response;
+// };

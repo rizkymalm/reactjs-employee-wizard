@@ -1,0 +1,35 @@
+:root {
+    --error: #EF4444;
+    --primary: #22C55E;
+    --primary-hover: rgba(34, 197, 94, .2);
+    --muted: #CFCFCF;
+    --text-dark: #1C1C1E;
+    --text-light: #F5F5F7;
+}
+
+.table-container
+
+.table-container {
+    position: relative;
+}
+
+.table-wrapper{
+    border-collapse: collapse;
+}
+
+.table-wrapper tr td,
+.table-wrapper tr th {
+    padding: 10px 12px;
+}
+.table-wrapper tbody tr:hover{
+    background-color: var(--muted);
+}
+
+.table-wrapper thead {
+    position: sticky;
+    top: 0;
+}
+
+.table-wrapper tbody{
+    font-size: 12px;
+}

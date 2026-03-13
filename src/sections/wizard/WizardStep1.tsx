@@ -16,6 +16,7 @@ import {
 } from '../../services/basicInfo.service';
 import { useDebounce } from '../../hooks/useDebounce';
 import { getDraft, saveDraft } from '../../utils/draftStorage';
+import Page from '../../components/Page';
 
 interface PropsOption {
     key: any;
@@ -80,7 +81,7 @@ const WizardStep1 = () => {
         validationSchema: basicInfoSchema,
         onSubmit: (values: BasicInfo) => {
             setBasicInfo(values);
-            // createBasicInfo(values);
+            createBasicInfo(values);
         },
     });
     const { handleSubmit, errors, touched, isValid, values } = formik;
@@ -95,65 +96,69 @@ const WizardStep1 = () => {
         console.log('Draft saved:', getDraft('wizardstep1_draft'));
     }, [debouncedValues]);
     return (
-        <div style={{ width: '100%' }}>
-            <FormikProvider value={formik}>
-                <Form onSubmit={handleSubmit}>
-                    <Textfield
-                        name="fullName"
-                        fullWidth
-                        placeholder="Full Name"
-                        defaultValue={values.fullName}
-                        contentBefore={<Icon icon={'mdi:user'} />}
-                        onChange={formik.handleChange}
-                        error={Boolean(touched.fullName && errors.fullName)}
-                        helperText={touched.fullName && errors.fullName}
-                    />
-                    <Textfield
-                        name="email"
-                        fullWidth
-                        placeholder="Email"
-                        defaultValue={values.email}
-                        contentBefore={<Icon icon={'mdi:email'} />}
-                        onChange={formik.handleChange}
-                        error={Boolean(touched.email && errors.email)}
-                        helperText={touched.email && errors.email}
-                    />
-                    <TextfieldAutocomplete
-                        options={departments || []}
-                        placeholder="Department"
-                        defaultText={values.department}
-                        contentBefore={
-                            <Icon icon={'mingcute:department-fill'} />
-                        }
-                        onChange={(data: string) => setSearch(data)}
-                        onSelected={(data: string) =>
-                            formik.setFieldValue('department', data)
-                        }
-                        fullWidth
-                        error={Boolean(touched.department && errors.department)}
-                        helperText={touched.department && errors.department}
-                    />
-                    <SelectOption
-                        name="role"
-                        options={roleType}
-                        defaultValue={values.role}
-                        contentBefore={<Icon icon={'fa7-solid:user-cog'} />}
-                        error={Boolean(touched.role && errors.role)}
-                        helperText={touched.role && errors.role}
-                        onChange={formik.handleChange}
-                    />
-                    <Button
-                        type="submit"
-                        text="Save Data"
-                        size="md"
-                        variant="contained"
-                        icon="mdi:content-save"
-                        iconSize={16}
-                        disabled={!isValid}
-                    />
-                </Form>
-            </FormikProvider>
-        </div>
+        <Page title="Wizard Step-1 | Basic Info">
+            <div className="wrapper">
+                <FormikProvider value={formik}>
+                    <Form onSubmit={handleSubmit} style={{ width: '100%' }}>
+                        <Textfield
+                            name="fullName"
+                            fullWidth
+                            placeholder="Full Name"
+                            defaultValue={values.fullName}
+                            contentBefore={<Icon icon={'mdi:user'} />}
+                            onChange={formik.handleChange}
+                            error={Boolean(touched.fullName && errors.fullName)}
+                            helperText={touched.fullName && errors.fullName}
+                        />
+                        <Textfield
+                            name="email"
+                            fullWidth
+                            placeholder="Email"
+                            defaultValue={values.email}
+                            contentBefore={<Icon icon={'mdi:email'} />}
+                            onChange={formik.handleChange}
+                            error={Boolean(touched.email && errors.email)}
+                            helperText={touched.email && errors.email}
+                        />
+                        <TextfieldAutocomplete
+                            options={departments || []}
+                            placeholder="Department"
+                            defaultText={values.department}
+                            contentBefore={
+                                <Icon icon={'mingcute:department-fill'} />
+                            }
+                            onChange={(data: string) => setSearch(data)}
+                            onSelected={(data: string) =>
+                                formik.setFieldValue('department', data)
+                            }
+                            fullWidth
+                            error={Boolean(
+                                touched.department && errors.department
+                            )}
+                            helperText={touched.department && errors.department}
+                        />
+                        <SelectOption
+                            name="role"
+                            options={roleType}
+                            defaultValue={values.role}
+                            contentBefore={<Icon icon={'fa7-solid:user-cog'} />}
+                            error={Boolean(touched.role && errors.role)}
+                            helperText={touched.role && errors.role}
+                            onChange={formik.handleChange}
+                        />
+                        <Button
+                            type="submit"
+                            text="Save Data"
+                            size="md"
+                            variant="contained"
+                            icon="mdi:content-save"
+                            iconSize={16}
+                            disabled={!isValid}
+                        />
+                    </Form>
+                </FormikProvider>
+            </div>
+        </Page>
     );
 };
 

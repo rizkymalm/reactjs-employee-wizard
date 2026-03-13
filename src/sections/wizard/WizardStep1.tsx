@@ -14,6 +14,8 @@ import {
     createBasicInfo,
     getDepartments,
 } from '../../services/basicInfo.service';
+import { useDebounce } from '../../hooks/useDebounce';
+import { clearDraft, getDraft, saveDraft } from '../../utils/draftStorage';
 
 interface PropsOption {
     key: any;
@@ -46,19 +48,20 @@ const roleType = [
 
 const WizardStep1 = () => {
     const { setBasicInfo } = useWizardState();
+    const draftStorage = getDraft('wizardstep1_draft');
     const [departments, setDepartments] = useState<PropsOption[]>([]);
     const [search, setSearch] = useState('');
     useEffect(() => {
         async function getLocationData() {
             let data: PropsOption[] = [];
-            const loc: any = await getDepartments({
+            const dep: any = await getDepartments({
                 'name:contains': search,
             });
-            for (let i = 0; i < loc.length; i++) {
+            for (let i = 0; i < dep.length; i++) {
                 data.push({
-                    key: loc[i].id,
-                    value: loc[i].id,
-                    text: loc[i].name,
+                    key: dep[i].name,
+                    value: dep[i].name,
+                    text: dep[i].name,
                 });
             }
             setDepartments(data);
@@ -66,19 +69,32 @@ const WizardStep1 = () => {
         getLocationData();
     }, [search]);
     const formik = useFormik({
-        initialValues: {
-            fullName: '',
-            email: '',
-            department: '',
-            role: '',
-        },
+        initialValues: draftStorage
+            ? draftStorage
+            : {
+                  fullName: '',
+                  email: '',
+                  department: '',
+                  role: '',
+              },
         validationSchema: basicInfoSchema,
         onSubmit: (values: BasicInfo) => {
             setBasicInfo(values);
             createBasicInfo(values);
+            clearDraft('wizardstep1_draft');
         },
     });
-    const { handleSubmit, errors, touched, isValid, dirty } = formik;
+    const { handleSubmit, errors, touched, isValid, values } = formik;
+
+    const debouncedValues = useDebounce(formik.values, 2000);
+
+    useEffect(() => {
+        if (debouncedValues) {
+            saveDraft('wizardstep1_draft', debouncedValues);
+        }
+
+        console.log('Draft saved:', getDraft('wizardstep1_draft'));
+    }, [debouncedValues]);
     return (
         <div>
             <FormikProvider value={formik}>
@@ -87,6 +103,7 @@ const WizardStep1 = () => {
                         name="fullName"
                         fullWidth
                         placeholder="Full Name"
+                        defaultValue={values.fullName}
                         contentBefore={<Icon icon={'mdi:user'} />}
                         onChange={formik.handleChange}
                         error={Boolean(touched.fullName && errors.fullName)}
@@ -96,6 +113,7 @@ const WizardStep1 = () => {
                         name="email"
                         fullWidth
                         placeholder="Email"
+                        defaultValue={values.email}
                         contentBefore={<Icon icon={'mdi:email'} />}
                         onChange={formik.handleChange}
                         error={Boolean(touched.email && errors.email)}
@@ -104,6 +122,7 @@ const WizardStep1 = () => {
                     <TextfieldAutocomplete
                         options={departments || []}
                         placeholder="Department"
+                        defaultText={values.department}
                         contentBefore={
                             <Icon icon={'mingcute:department-fill'} />
                         }
@@ -118,7 +137,7 @@ const WizardStep1 = () => {
                     <SelectOption
                         name="role"
                         options={roleType}
-                        defaultValue={formik.values.role}
+                        defaultValue={values.role}
                         contentBefore={<Icon icon={'fa7-solid:user-cog'} />}
                         error={Boolean(touched.role && errors.role)}
                         helperText={touched.role && errors.role}
@@ -131,7 +150,7 @@ const WizardStep1 = () => {
                         variant="contained"
                         icon="mdi:content-save"
                         iconSize={16}
-                        disabled={!isValid || !dirty}
+                        disabled={!isValid}
                     />
                 </Form>
             </FormikProvider>

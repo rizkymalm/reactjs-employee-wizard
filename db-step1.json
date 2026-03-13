@@ -17,14 +17,6 @@
       "name": "Engineering"
     }
   ],
-  "basicInfo": [
-    {
-      "id": "8564",
-      "fullName": "Rizki Malem",
-      "email": "rizkymalm@gmail.com",
-      "department": "4",
-      "role": "Admin"
-    }
-  ],
+  "basicInfo": [],
   "$schema": "./node_modules/json-server/schema.json"
 }

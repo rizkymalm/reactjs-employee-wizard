@@ -15,7 +15,7 @@ import {
     getDepartments,
 } from '../../services/basicInfo.service';
 import { useDebounce } from '../../hooks/useDebounce';
-import { clearDraft, getDraft, saveDraft } from '../../utils/draftStorage';
+import { getDraft, saveDraft } from '../../utils/draftStorage';
 
 interface PropsOption {
     key: any;
@@ -80,8 +80,7 @@ const WizardStep1 = () => {
         validationSchema: basicInfoSchema,
         onSubmit: (values: BasicInfo) => {
             setBasicInfo(values);
-            createBasicInfo(values);
-            clearDraft('wizardstep1_draft');
+            // createBasicInfo(values);
         },
     });
     const { handleSubmit, errors, touched, isValid, values } = formik;
@@ -96,7 +95,7 @@ const WizardStep1 = () => {
         console.log('Draft saved:', getDraft('wizardstep1_draft'));
     }, [debouncedValues]);
     return (
-        <div>
+        <div style={{ width: '100%' }}>
             <FormikProvider value={formik}>
                 <Form onSubmit={handleSubmit}>
                     <Textfield

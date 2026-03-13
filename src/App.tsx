@@ -1,13 +1,14 @@
 import { BrowserRouter } from 'react-router-dom';
 import './App.css';
 import Router from './routes';
+import { RoleProvider } from './context/RoleContext';
 
 function App() {
     return (
         <BrowserRouter>
-            <div className="container">
+            <RoleProvider>
                 <Router />
-            </div>
+            </RoleProvider>
         </BrowserRouter>
     );
 }

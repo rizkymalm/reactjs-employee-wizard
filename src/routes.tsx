@@ -1,19 +1,39 @@
-import { Navigate, useRoutes } from 'react-router-dom';
+import { Navigate, useRoutes, useSearchParams } from 'react-router-dom';
 import WizardPage from './pages/WizardPage';
 import EmployeePage from './pages/EmployeePage';
+import WizardStep1 from './sections/wizard/WizardStep1';
+import WizardStep2 from './sections/wizard/WizardStep2';
+import SelectRolePage from './pages/SelectRolePage';
 
 export default function Router() {
+    const [params] = useSearchParams();
+    const role = params.get('role');
     return useRoutes([
         {
             path: '/',
             children: [
                 {
                     path: '',
-                    element: <WizardPage />,
+                    element: <SelectRolePage />,
                 },
                 {
                     path: 'wizard',
                     element: <WizardPage />,
+                    children: [
+                        {
+                            path: 'step-1',
+                            element:
+                                role === 'admin' ? (
+                                    <WizardStep1 />
+                                ) : (
+                                    <Navigate to="/employee" />
+                                ),
+                        },
+                        {
+                            path: 'step-2',
+                            element: <WizardStep2 />,
+                        },
+                    ],
                 },
                 {
                     path: 'employee',

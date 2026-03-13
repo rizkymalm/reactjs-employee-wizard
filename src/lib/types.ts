@@ -1,3 +1,5 @@
+export type Role = 'admin' | 'ops' | null;
+
 export type BasicInfo = {
     fullName: string;
     email: string;
@@ -10,4 +12,9 @@ export type DetailInfo = {
     type: string;
     location: string;
     notes: string;
+};
+
+export type WizardState = {
+    basicInfo: BasicInfo | null;
+    details: DetailInfo | null;
 };

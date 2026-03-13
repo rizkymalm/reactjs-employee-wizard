@@ -1,6 +1,6 @@
 import * as yup from 'yup';
 
-enum type {
+enum Type {
     fullTime = 'Full-time',
     partTime = 'Part-time',
     contract = 'Contract',
@@ -19,6 +19,6 @@ export const basicInfoSchema = yup.object({
 });
 
 export const detailInfoSchema = yup.object({
-    type: yup.string().oneOf(Object.values(type) as string[]),
+    type: yup.string().oneOf(Object.values(Type) as string[]),
     location: yup.string().required('Department is required'),
 });

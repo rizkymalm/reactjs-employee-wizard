@@ -1,7 +1,8 @@
+import '../../styles/button.css';
+
 import { Icon } from '@iconify/react';
 import type { JSX } from 'react';
 import React from 'react';
-import '../../styles/button.css';
 
 interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     text: string;

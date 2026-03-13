@@ -15,11 +15,7 @@ const Page = forwardRef<HTMLDivElement, PageProps>(
                     <title>{title}</title>
                     {meta}
                 </Helmet>
-                <div
-                    ref={ref}
-                    {...other}
-                    className='container'
-                >
+                <div ref={ref} {...other} className="container">
                     {children}
                 </div>
             </>

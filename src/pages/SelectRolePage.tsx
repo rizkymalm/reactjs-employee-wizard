@@ -1,9 +1,10 @@
-import Page from '../components/Page';
 import React from 'react';
-import { Button } from '../components/buttons';
-import { useRole } from '../context/RoleContext';
-import { Role } from '../lib/types';
 import { useNavigate } from 'react-router-dom';
+
+import { Button } from '../components/buttons';
+import Page from '../components/Page';
+import { useRole } from '../hooks/useRole';
+import type { Role } from '../lib/types';
 
 const SelectRolePage = () => {
     const navigate = useNavigate();

@@ -63,7 +63,7 @@ const TextfieldAutocomplete = ({
                     <span className="content">{contentBefore}</span>
                 )}
                 <input
-                    className={`focus-visible:outline-none`}
+                    className="focus-visible:outline-none"
                     style={{
                         width: fullWidth ? '100%' : 'auto',
                         textAlign: align,

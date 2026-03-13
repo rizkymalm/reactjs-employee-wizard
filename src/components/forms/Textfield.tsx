@@ -1,5 +1,6 @@
-import React from 'react';
 import '../../styles/form.css';
+
+import React from 'react';
 
 interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
     contentBefore?: any;
@@ -8,7 +9,6 @@ interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
     error?: boolean;
     helperText?: any;
     placeholder?: string;
-    align?: 'right' | 'left' | 'center';
 }
 
 const Textfield = ({
@@ -17,18 +17,19 @@ const Textfield = ({
     fullWidth,
     error,
     helperText,
-    align,
     placeholder,
     ...props
 }: Props) => {
     return (
         <div
-            className={`textfield`}
+            className="textfield"
             style={{
                 width: fullWidth ? '100%' : 'auto',
             }}
         >
-            <span className={`${error ? 'border-error' : ''} wrapper transition-all`}>
+            <span
+                className={`${error ? 'border-error' : ''} wrapper transition-all`}
+            >
                 {contentBefore && (
                     <span className="content-texfield">{contentBefore}</span>
                 )}

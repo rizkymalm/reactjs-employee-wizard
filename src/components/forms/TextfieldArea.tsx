@@ -47,11 +47,7 @@ const TextfieldArea = ({
                     )}
                 </span>
             </label>
-            {error && (
-                <div className="helpertext">
-                    {helperText}
-                </div>
-            )}
+            {error && <div className="helpertext">{helperText}</div>}
         </div>
     );
 };

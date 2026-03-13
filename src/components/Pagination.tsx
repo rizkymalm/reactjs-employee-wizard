@@ -1,9 +1,8 @@
 'use client';
 
 import { Icon } from '@iconify/react';
-import { useEffect, useState } from 'react';
-import { SelectOption } from './forms';
 
+import { SelectOption } from './forms';
 
 interface Props {
     params: {
@@ -42,19 +41,10 @@ const Pagination = ({
     total,
     loading,
 }: Props) => {
-    const [pagination, setPagination] = useState({
-        start: 0,
-        end: 0,
-    });
-    useEffect(() => {
-        setPagination({
-            start: params.page * params.perPage - (params.perPage - 1),
-            end:
-                params.page === totalPage
-                    ? total
-                    : params.page * params.perPage,
-        });
-    }, [params, totalPage, total]);
+    const pagination = {
+        start: params.page * params.perPage - (params.perPage - 1),
+        end: params.page === totalPage ? total : params.page * params.perPage,
+    };
     const handleSetPage = (page: number) => {
         setParams({
             ...params,

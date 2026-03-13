@@ -1,7 +1,9 @@
-import { BrowserRouter } from 'react-router-dom';
 import './App.css';
+
+import { BrowserRouter } from 'react-router-dom';
+
+import { RoleProvider } from './context/RoleProvider';
 import Router from './routes';
-import { RoleProvider } from './context/RoleContext';
 
 function App() {
     return (

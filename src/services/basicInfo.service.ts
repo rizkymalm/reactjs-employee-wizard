@@ -4,7 +4,7 @@ const baseUrl = 'http://localhost:4001';
 
 export async function createBasicInfo(data: any) {
     const response = await apiFetch({
-        baseUrl: baseUrl,
+        baseUrl,
         endpoint: '/basicInfo',
         method: 'POST',
         data,
@@ -14,7 +14,7 @@ export async function createBasicInfo(data: any) {
 
 export async function getDepartments(params?: any) {
     const response = await apiFetch({
-        baseUrl: baseUrl,
+        baseUrl,
         endpoint: '/departments',
         method: 'GET',
         params,
@@ -24,7 +24,7 @@ export async function getDepartments(params?: any) {
 
 export async function getBasicInfo(params?: any) {
     const response = await apiFetch({
-        baseUrl: baseUrl,
+        baseUrl,
         endpoint: '/basicInfo',
         method: 'GET',
         params,

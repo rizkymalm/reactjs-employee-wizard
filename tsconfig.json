@@ -1,7 +1,57 @@
 {
-  "files": [],
-  "references": [
-    { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.node.json" }
-  ]
+    "compilerOptions": {
+        "lib": ["dom", "dom.iterable", "esnext"],
+        "module": "ESNext",
+        "moduleResolution": "bundler",
+        "resolveJsonModule": true,
+        "removeComments": true,
+        "preserveConstEnums": true,
+        "strict": true,
+        "noUncheckedIndexedAccess": true,
+        "types": ["vite/client"],
+
+        "noImplicitAny": true,
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "allowUnreachableCode": false,
+        "noFallthroughCasesInSwitch": true,
+
+        "target": "ES2022",
+        "sourceMap": true,
+
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "allowJs": true,
+        "checkJs": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true,
+
+        "jsx": "preserve",
+        "noEmit": true,
+        "isolatedModules": true,
+        "incremental": true,
+
+        "plugins": [
+            {
+                "name": "next"
+            }
+        ],
+
+        "baseUrl": ".",
+        "paths": {
+            "@/*": ["src/*"],
+            "@/public/*": ["./public/*"]
+        }
+    },
+    "include": [
+        "vite.config.ts",
+        "eslint.config.mts",
+        "**/*.ts",
+        "**/*.tsx",
+        ".storybook/*.ts",
+        "**/*.mts",
+    ],
+    "exclude": ["./node_modules/**/*"]
 }

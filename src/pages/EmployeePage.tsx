@@ -1,9 +1,10 @@
-import EmployeeTableList from '../sections/employee/EmployeeTableList';
-import Page from '../components/Page';
 import React from 'react';
-import { Button } from '../components/buttons';
-import { useRole } from '../context/RoleContext';
 import { useNavigate } from 'react-router-dom';
+
+import { Button } from '../components/buttons';
+import Page from '../components/Page';
+import { useRole } from '../hooks/useRole';
+import EmployeeTableList from '../sections/employee/EmployeeTableList';
 
 const EmployeePage = () => {
     const { role } = useRole();

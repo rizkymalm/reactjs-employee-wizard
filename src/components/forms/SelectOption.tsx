@@ -33,13 +33,15 @@ const SelectOption = ({
     const selectId = useId();
     return (
         <div
-            className={`select-option`}
+            className="select-option"
             style={{
                 width: fullWidth ? '100%' : 'auto',
             }}
         >
             <label htmlFor={`${selectId}-outline`}>{label}</label>
-            <span className={`select-wrapper transition-all ${error ? 'border-error' : ''}`}>
+            <span
+                className={`select-wrapper transition-all ${error ? 'border-error' : ''}`}
+            >
                 {contentBefore && (
                     <span className="content">{contentBefore}</span>
                 )}
@@ -64,11 +66,7 @@ const SelectOption = ({
                 </span>
             </span>
 
-            {error && (
-                <div className="helpertext">
-                    {helperText}
-                </div>
-            )}
+            {error && <div className="helpertext">{helperText}</div>}
         </div>
     );
 };

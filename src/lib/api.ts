@@ -18,7 +18,7 @@ export async function apiFetch({
     headers = {},
 }: RequestOptions) {
     const queryString = params
-        ? '?' + new URLSearchParams(params).toString()
+        ? `?${new URLSearchParams(params).toString()}`
         : '';
 
     const response = await fetch(`${baseUrl}${endpoint}${queryString}`, {

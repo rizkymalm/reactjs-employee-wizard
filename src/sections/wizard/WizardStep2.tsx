@@ -1,17 +1,18 @@
+import { Form, FormikProvider, useFormik } from 'formik';
+import React, { useEffect, useState } from 'react';
+
+import { Button } from '../../components/buttons';
 import {
     FileUpload,
-    TextfieldArea,
     SelectOption,
+    TextfieldArea,
     TextfieldAutocomplete,
 } from '../../components/forms';
-import React, { useEffect, useState } from 'react';
-import { Button } from '../../components/buttons';
-import { Form, FormikProvider, useFormik } from 'formik';
-import { detailInfoSchema } from '../../utils/validation';
-import { createBasicInfo } from '../../services/basicInfo.service';
-import { DetailInfo } from '../../lib/types';
-import { getLocation } from '../../services/detail.service';
 import Page from '../../components/Page';
+import type { DetailInfo } from '../../lib/types';
+import { createBasicInfo } from '../../services/basicInfo.service';
+import { getLocation } from '../../services/detail.service';
+import { detailInfoSchema } from '../../utils/validation';
 
 interface PropsOption {
     key: any;
@@ -47,7 +48,7 @@ const WizardStep2 = () => {
     const [search, setSearch] = useState('');
     useEffect(() => {
         async function getLocationData() {
-            let data: PropsOption[] = [];
+            const data: PropsOption[] = [];
             const loc: any = await getLocation({
                 'name:contains': search,
             });
@@ -89,9 +90,12 @@ const WizardStep2 = () => {
                             helperText={touched.location && errors.location}
                         />
                         <TextfieldAutocomplete
+                            name="location"
                             options={location || []}
                             onChange={(data: string) => setSearch(data)}
-                            onSelected={() => console.log('aaa')}
+                            onSelected={(data: string) =>
+                                formik.setFieldValue('location', data)
+                            }
                             fullWidth
                         />
                         <TextfieldArea

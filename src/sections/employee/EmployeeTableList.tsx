@@ -1,7 +1,8 @@
-import Pagination from '../../components/Pagination';
-import { BasicInfo } from '../../lib/types';
-import { getBasicInfo } from '../../services/basicInfo.service';
 import React, { useEffect, useState } from 'react';
+
+import Pagination from '../../components/Pagination';
+import type { BasicInfo } from '../../lib/types';
+import { getBasicInfo } from '../../services/basicInfo.service';
 
 const EmployeeTableList = () => {
     const [list, setList] = useState([]);
@@ -12,7 +13,7 @@ const EmployeeTableList = () => {
     const [params, setParams] = useState({
         search: '',
         page: 1,
-        perPage: 10,
+        perPage: 2,
     });
     useEffect(() => {
         async function basicInfoList() {

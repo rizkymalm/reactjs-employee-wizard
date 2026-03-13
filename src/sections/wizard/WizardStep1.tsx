@@ -1,21 +1,22 @@
+import { Icon } from '@iconify/react';
+import { Form, FormikProvider, useFormik } from 'formik';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import { Button } from '../../components/buttons';
 import {
     SelectOption,
     Textfield,
     TextfieldAutocomplete,
 } from '../../components/forms';
-import React, { useEffect, useState } from 'react';
-import { Icon } from '@iconify/react';
-import { Button } from '../../components/buttons';
-import { Form, FormikProvider, useFormik } from 'formik';
-import { basicInfoSchema } from '../../utils/validation';
-import { BasicInfo } from '../../lib/types';
-import { useWizardState } from '../../hooks/useWizardState';
-import { getDepartments } from '../../services/basicInfo.service';
-import { useDebounce } from '../../hooks/useDebounce';
-import { getDraft, saveDraft } from '../../utils/draftStorage';
 import Page from '../../components/Page';
-import { useRole } from '../../context/RoleContext';
-import { useNavigate } from 'react-router-dom';
+import { useDebounce } from '../../hooks/useDebounce';
+import { useRole } from '../../hooks/useRole';
+import { useWizardState } from '../../hooks/useWizardState';
+import type { BasicInfo } from '../../lib/types';
+import { getDepartments } from '../../services/basicInfo.service';
+import { getDraft, saveDraft } from '../../utils/draftStorage';
+import { basicInfoSchema } from '../../utils/validation';
 
 interface PropsOption {
     key: any;
@@ -55,7 +56,7 @@ const WizardStep1 = () => {
     const [search, setSearch] = useState('');
     useEffect(() => {
         async function getLocationData() {
-            let data: PropsOption[] = [];
+            const data: PropsOption[] = [];
             const dep: any = await getDepartments({
                 'name:contains': search,
             });
@@ -71,14 +72,12 @@ const WizardStep1 = () => {
         getLocationData();
     }, [search]);
     const formik = useFormik({
-        initialValues: draftStorage
-            ? draftStorage
-            : {
-                  fullName: '',
-                  email: '',
-                  department: '',
-                  role: '',
-              },
+        initialValues: draftStorage || {
+            fullName: '',
+            email: '',
+            department: '',
+            role: '',
+        },
         validationSchema: basicInfoSchema,
         onSubmit: (values: BasicInfo) => {
             setBasicInfo(values);
@@ -94,7 +93,7 @@ const WizardStep1 = () => {
             saveDraft('wizardstep1_draft', debouncedValues);
         }
 
-        console.log('Draft saved:', getDraft('wizardstep1_draft'));
+        // console.log('Draft saved:', getDraft('wizardstep1_draft'));
     }, [debouncedValues]);
     return (
         <Page title="Wizard Step-1 | Basic Info">
@@ -106,7 +105,7 @@ const WizardStep1 = () => {
                             fullWidth
                             placeholder="Full Name"
                             defaultValue={values.fullName}
-                            contentBefore={<Icon icon={'mdi:user'} />}
+                            contentBefore={<Icon icon="mdi:user" />}
                             onChange={formik.handleChange}
                             error={Boolean(touched.fullName && errors.fullName)}
                             helperText={touched.fullName && errors.fullName}
@@ -116,7 +115,7 @@ const WizardStep1 = () => {
                             fullWidth
                             placeholder="Email"
                             defaultValue={values.email}
-                            contentBefore={<Icon icon={'mdi:email'} />}
+                            contentBefore={<Icon icon="mdi:email" />}
                             onChange={formik.handleChange}
                             error={Boolean(touched.email && errors.email)}
                             helperText={touched.email && errors.email}
@@ -126,7 +125,7 @@ const WizardStep1 = () => {
                             placeholder="Department"
                             defaultText={values.department}
                             contentBefore={
-                                <Icon icon={'mingcute:department-fill'} />
+                                <Icon icon="mingcute:department-fill" />
                             }
                             onChange={(data: string) => setSearch(data)}
                             onSelected={(data: string) =>
@@ -142,7 +141,7 @@ const WizardStep1 = () => {
                             name="role"
                             options={roleType}
                             defaultValue={values.role}
-                            contentBefore={<Icon icon={'fa7-solid:user-cog'} />}
+                            contentBefore={<Icon icon="fa7-solid:user-cog" />}
                             error={Boolean(touched.role && errors.role)}
                             helperText={touched.role && errors.role}
                             onChange={formik.handleChange}

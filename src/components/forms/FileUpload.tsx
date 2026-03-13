@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
 import '../../styles/form.css';
+
 import { Icon } from '@iconify/react';
+import React, { useState } from 'react';
 
 interface Props {
     name: string;
@@ -24,20 +25,20 @@ const FileUpload = ({ name, multiple = false }: Props) => {
             <label htmlFor="photo">
                 <span>
                     <Icon
-                        icon={'mdi:file-image-outline'}
+                        icon="mdi:file-image-outline"
                         width={28}
                         height={28}
                     />
                 </span>
+                <input
+                    name={name}
+                    type="file"
+                    id="photo"
+                    accept="image/*"
+                    multiple={multiple}
+                    onChange={handleChange}
+                />
             </label>
-            <input
-                name={name}
-                type="file"
-                id="photo"
-                accept="image/*"
-                multiple={multiple}
-                onChange={handleChange}
-            />
             {imagePreview && (
                 <div className="preview">
                     <button
@@ -45,7 +46,7 @@ const FileUpload = ({ name, multiple = false }: Props) => {
                         type="button"
                         onClick={handleRemoveFile}
                     >
-                        <Icon icon={'mdi:trash'} width={16} height={16} />
+                        <Icon icon="mdi:trash" width={16} height={16} />
                     </button>
                     <div>
                         <div
@@ -53,7 +54,7 @@ const FileUpload = ({ name, multiple = false }: Props) => {
                             style={{
                                 backgroundImage: `url('${imagePreview}')`,
                             }}
-                        ></div>
+                        />
                     </div>
                 </div>
             )}

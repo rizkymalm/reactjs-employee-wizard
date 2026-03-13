@@ -10,8 +10,8 @@ export const createBasicInfo = async (data: any) => {
     return response;
 };
 
-export const showBasicInfo = async () => {
-    const response = await dummy.get('/basicInfo');
+export const getBasicInfo = async (queries?: any) => {
+    const response = await dummy.get('/basicInfo', { queries });
     return response;
 };
 

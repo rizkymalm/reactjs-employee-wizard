@@ -16,6 +16,7 @@ interface Props extends React.SelectHTMLAttributes<HTMLSelectElement> {
     label?: string;
     nullValue?: boolean;
     nullValueText?: string;
+    contentBefore?: any;
 }
 
 const SelectOption = ({
@@ -26,6 +27,7 @@ const SelectOption = ({
     fullWidth,
     nullValue,
     nullValueText,
+    contentBefore,
     ...props
 }: Props) => {
     const selectId = useId();
@@ -38,6 +40,9 @@ const SelectOption = ({
         >
             <label htmlFor={`${selectId}-outline`}>{label}</label>
             <span className={`select-wrapper transition-all ${error ? 'border-error' : ''}`}>
+                {contentBefore && (
+                    <span className="content">{contentBefore}</span>
+                )}
                 <select {...props}>
                     {nullValue && nullValueText && (
                         <option key="null" value="">

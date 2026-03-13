@@ -1,4 +1,8 @@
-import { Textfield, TextfieldAutocomplete } from '../../components/forms';
+import {
+    SelectOption,
+    Textfield,
+    TextfieldAutocomplete,
+} from '../../components/forms';
 import React, { useEffect, useState } from 'react';
 import { Icon } from '@iconify/react';
 import { Button } from '../../components/buttons';
@@ -16,6 +20,29 @@ interface PropsOption {
     text: string;
     value: string;
 }
+
+const roleType = [
+    {
+        key: 'Ops',
+        value: 'Ops',
+        text: 'Ops',
+    },
+    {
+        key: 'Admin',
+        value: 'Admin',
+        text: 'Admin',
+    },
+    {
+        key: 'Engineer',
+        value: 'Engineer',
+        text: 'Engineer',
+    },
+    {
+        key: 'Finance',
+        value: 'Finance',
+        text: 'Finance',
+    },
+];
 
 const WizardStep1 = () => {
     const { setBasicInfo } = useWizardState();
@@ -76,6 +103,7 @@ const WizardStep1 = () => {
                     />
                     <TextfieldAutocomplete
                         options={departments || []}
+                        placeholder="Department"
                         contentBefore={
                             <Icon icon={'mingcute:department-fill'} />
                         }
@@ -87,14 +115,14 @@ const WizardStep1 = () => {
                         error={Boolean(touched.department && errors.department)}
                         helperText={touched.department && errors.department}
                     />
-                    <Textfield
+                    <SelectOption
                         name="role"
-                        fullWidth
-                        placeholder="Role"
+                        options={roleType}
+                        defaultValue={formik.values.role}
                         contentBefore={<Icon icon={'fa7-solid:user-cog'} />}
-                        onChange={formik.handleChange}
                         error={Boolean(touched.role && errors.role)}
                         helperText={touched.role && errors.role}
+                        onChange={formik.handleChange}
                     />
                     <Button
                         type="submit"

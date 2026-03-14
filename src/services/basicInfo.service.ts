@@ -2,7 +2,7 @@ import { apiFetch } from '../lib/api';
 
 const baseUrl = 'http://localhost:4001';
 
-export async function createBasicInfo(data: any) {
+export async function postBasicInfo(data: any) {
     const response = await apiFetch({
         baseUrl,
         endpoint: '/basicInfo',

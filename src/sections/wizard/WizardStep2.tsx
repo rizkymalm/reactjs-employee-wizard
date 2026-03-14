@@ -9,9 +9,11 @@ import {
     TextfieldAutocomplete,
 } from '../../components/forms';
 import Page from '../../components/Page';
+import { useDebounce } from '../../hooks/useDebounce';
+import { useRole } from '../../hooks/useRole';
 import type { DetailInfo } from '../../lib/types';
-import { createBasicInfo } from '../../services/basicInfo.service';
-import { getLocation } from '../../services/detail.service';
+import { getLocation, postDetail } from '../../services/detail.service';
+import { getDraft, saveDraft } from '../../utils/draftStorage';
 import { detailInfoSchema } from '../../utils/validation';
 
 interface PropsOption {
@@ -22,28 +24,31 @@ interface PropsOption {
 
 const employementType = [
     {
-        key: 'fullTime',
-        value: 'fulltime',
+        key: 'Full-time',
+        value: 'Full-time',
         text: 'Full-time',
     },
     {
-        key: 'partTime',
-        value: 'partTime',
+        key: 'Part-time',
+        value: 'Part-time',
         text: 'Part-time',
     },
     {
-        key: 'contract',
-        value: 'contract',
+        key: 'Contract',
+        value: 'Contract',
         text: 'Contract',
     },
     {
-        key: 'intern',
-        value: 'intern',
+        key: 'Intern',
+        value: 'Intern',
         text: 'Intern',
     },
 ];
 
 const WizardStep2 = () => {
+    const { role } = useRole();
+    const draftRole = `draft_${role}`;
+    const draftStorage = getDraft(draftRole);
     const [location, setLocation] = useState<PropsOption[]>([]);
     const [search, setSearch] = useState('');
     useEffect(() => {
@@ -54,8 +59,8 @@ const WizardStep2 = () => {
             });
             for (let i = 0; i < loc.length; i++) {
                 data.push({
-                    key: loc[i].id,
-                    value: loc[i].id,
+                    key: loc[i].name,
+                    value: loc[i].name,
                     text: loc[i].name,
                 });
             }
@@ -65,7 +70,7 @@ const WizardStep2 = () => {
     }, [search]);
 
     const formik = useFormik({
-        initialValues: {
+        initialValues: draftStorage || {
             photo: '',
             type: '',
             location: '',
@@ -73,30 +78,50 @@ const WizardStep2 = () => {
         },
         validationSchema: detailInfoSchema,
         onSubmit: (values: DetailInfo) => {
-            createBasicInfo(values);
+            postDetail(values);
         },
     });
-    const { handleSubmit, errors, touched, isValid, dirty } = formik;
+    const { handleSubmit, errors, touched, isValid, values } = formik;
+    const debouncedValues = useDebounce(formik.values, 2000);
+
+    useEffect(() => {
+        if (debouncedValues) {
+            saveDraft(draftRole, debouncedValues);
+        }
+
+        // console.log('Draft saved:', draftStorage);
+    }, [debouncedValues]);
     return (
         <Page title="Wizard Step-2 | Basic Info">
             <div className="wrapper">
                 <FormikProvider value={formik}>
                     <Form onSubmit={handleSubmit} style={{ width: '60%' }}>
-                        <FileUpload name="photo" />
+                        <FileUpload
+                            name="photo"
+                            onSelected={(data: any) =>
+                                formik.setFieldValue('photo', data)
+                            }
+                            defaultImage={values.photo}
+                        />
                         <SelectOption
                             name="type"
                             options={employementType}
-                            error={Boolean(touched.location && errors.location)}
-                            helperText={touched.location && errors.location}
+                            error={Boolean(touched.type && errors.type)}
+                            helperText={touched.type && errors.type}
+                            onChange={formik.handleChange}
+                            defaultValue={values.type}
                         />
                         <TextfieldAutocomplete
                             name="location"
                             options={location || []}
+                            defaultText={values.location}
                             onChange={(data: string) => setSearch(data)}
                             onSelected={(data: string) =>
                                 formik.setFieldValue('location', data)
                             }
                             fullWidth
+                            error={Boolean(touched.location && errors.location)}
+                            helperText={touched.location && errors.location}
                         />
                         <TextfieldArea
                             name="notes"
@@ -112,7 +137,7 @@ const WizardStep2 = () => {
                             variant="contained"
                             icon="mdi:content-save"
                             iconSize={16}
-                            disabled={!isValid || !dirty}
+                            disabled={!isValid}
                         />
                     </Form>
                 </FormikProvider>

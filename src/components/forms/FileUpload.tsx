@@ -3,22 +3,37 @@ import '../../styles/form.css';
 import { Icon } from '@iconify/react';
 import React, { useState } from 'react';
 
-interface Props {
+import { convertToBase64 } from '../../utils/convertbase64';
+
+interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
     name: string;
     multiple?: boolean;
+    onSelected: any;
+    defaultImage?: string;
 }
 
-const FileUpload = ({ name, multiple = false }: Props) => {
-    const [imagePreview, setImagePreview] = useState('');
-    const handleChange = (event: any) => {
+const FileUpload = ({
+    name,
+    multiple = false,
+    onSelected,
+    defaultImage,
+    ...props
+}: Props) => {
+    const [imagePreview, setImagePreview] = useState<string | null>(
+        defaultImage || null
+    );
+    const handleChange = async (event: any) => {
         const file = event.target.files[0];
         if (file) {
-            const fileURL = URL.createObjectURL(file);
-            setImagePreview(fileURL);
+            // const fileURL = URL.createObjectURL(file);
+            const base64 = await convertToBase64(file);
+            setImagePreview(base64);
+            onSelected(base64);
         }
     };
     const handleRemoveFile = () => {
         setImagePreview('');
+        onSelected('');
     };
     return (
         <div className="file-upload">
@@ -37,6 +52,7 @@ const FileUpload = ({ name, multiple = false }: Props) => {
                     accept="image/*"
                     multiple={multiple}
                     onChange={handleChange}
+                    {...props}
                 />
             </label>
             {imagePreview && (

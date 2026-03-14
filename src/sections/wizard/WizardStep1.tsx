@@ -49,9 +49,10 @@ const roleType = [
 
 const WizardStep1 = () => {
     const navigate = useNavigate();
-    const { role } = useRole();
     const { setBasicInfo } = useWizardState();
-    const draftStorage = getDraft('wizardstep1_draft');
+    const { role } = useRole();
+    const draftRole = `draft_${role}`;
+    const storage = getDraft(draftRole);
     const [departments, setDepartments] = useState<PropsOption[]>([]);
     const [search, setSearch] = useState('');
     useEffect(() => {
@@ -72,12 +73,13 @@ const WizardStep1 = () => {
         getLocationData();
     }, [search]);
     const formik = useFormik({
-        initialValues: draftStorage || {
+        initialValues: storage.basicInfo ?? {
             fullName: '',
             email: '',
             department: '',
             role: '',
         },
+        enableReinitialize: true,
         validationSchema: basicInfoSchema,
         onSubmit: (values: BasicInfo) => {
             setBasicInfo(values);
@@ -90,10 +92,12 @@ const WizardStep1 = () => {
 
     useEffect(() => {
         if (debouncedValues) {
-            saveDraft('wizardstep1_draft', debouncedValues);
+            const draftStorage = getDraft(draftRole);
+            saveDraft(draftRole, {
+                ...draftStorage,
+                basicInfo: debouncedValues,
+            });
         }
-
-        // console.log('Draft saved:', getDraft('wizardstep1_draft'));
     }, [debouncedValues]);
     return (
         <Page title="Wizard Step-1 | Basic Info">
@@ -122,7 +126,7 @@ const WizardStep1 = () => {
                         />
                         <TextfieldAutocomplete
                             options={departments || []}
-                            placeholder="Department"
+                            placeholder={values.department}
                             defaultText={values.department}
                             contentBefore={
                                 <Icon icon="mingcute:department-fill" />

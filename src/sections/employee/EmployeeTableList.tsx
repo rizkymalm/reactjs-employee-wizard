@@ -13,7 +13,7 @@ const EmployeeTableList = () => {
     const [params, setParams] = useState({
         search: '',
         page: 1,
-        perPage: 2,
+        perPage: 10,
     });
     useEffect(() => {
         async function basicInfoList() {

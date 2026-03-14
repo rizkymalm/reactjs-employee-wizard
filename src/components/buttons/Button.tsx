@@ -4,6 +4,8 @@ import { Icon } from '@iconify/react';
 import type { JSX } from 'react';
 import React from 'react';
 
+import Spinner from './Spinner';
+
 interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     text: string;
     type: JSX.IntrinsicElements['button']['type'];
@@ -13,7 +15,6 @@ interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     iconSize?: number;
     fullWidth?: boolean;
     loading?: boolean;
-    disabled?: boolean;
 }
 
 const Button = ({
@@ -25,7 +26,6 @@ const Button = ({
     iconSize,
     fullWidth,
     loading,
-    disabled,
     className,
     ...props
 }: Props) => {
@@ -34,7 +34,6 @@ const Button = ({
     return variant === 'contained' ? (
         <button
             className={`button contained transition-all ${btnSize} ${className}`}
-            disabled={disabled || loading}
             style={{
                 width: fullWidth ? '100%' : 'auto',
             }}
@@ -47,26 +46,20 @@ const Button = ({
             }
             {...props}
         >
-            {loading ? (
-                'Loading'
-            ) : (
-                <>
-                    {icon && (
-                        <Icon
-                            icon={`${icon}`}
-                            width={iconSize}
-                            height={iconSize}
-                            className="m-auto"
-                        />
-                    )}
-                    {text}
-                </>
+            {icon && (
+                <Icon
+                    icon={`${icon}`}
+                    width={iconSize}
+                    height={iconSize}
+                    className="m-auto"
+                />
             )}
+            {text}
+            {loading && <Spinner />}
         </button>
     ) : variant === 'outlined' ? (
         <button
             className={`button outline ${btnSize}`}
-            disabled={disabled || loading}
             style={{
                 width: fullWidth ? '100%' : 'auto',
             }}
@@ -79,26 +72,20 @@ const Button = ({
             }
             {...props}
         >
-            {loading ? (
-                'Loading'
-            ) : (
-                <>
-                    {icon && (
-                        <Icon
-                            icon={`${icon}`}
-                            width={iconSize}
-                            height={iconSize}
-                            className="m-auto"
-                        />
-                    )}
-                    {text}
-                </>
+            {icon && (
+                <Icon
+                    icon={`${icon}`}
+                    width={iconSize}
+                    height={iconSize}
+                    className="m-auto"
+                />
             )}
+            {text}
+            {loading && <Spinner />}
         </button>
     ) : (
         <button
             className={`button texted transition-all ${btnSize}`}
-            disabled={disabled || loading}
             style={{
                 width: fullWidth ? '100%' : 'auto',
             }}
@@ -111,21 +98,16 @@ const Button = ({
             }
             {...props}
         >
-            {loading ? (
-                'Loading'
-            ) : (
-                <>
-                    {icon && (
-                        <Icon
-                            icon={`${icon}`}
-                            width={iconSize}
-                            height={iconSize}
-                            className="m-auto"
-                        />
-                    )}
-                    {text}
-                </>
+            {icon && (
+                <Icon
+                    icon={`${icon}`}
+                    width={iconSize}
+                    height={iconSize}
+                    className="m-auto"
+                />
             )}
+            {text}
+            {loading && <Spinner />}
         </button>
     );
 };

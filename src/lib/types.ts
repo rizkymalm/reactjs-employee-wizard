@@ -1,6 +1,7 @@
 export type Role = 'admin' | 'ops' | null;
 
 export type BasicInfo = {
+    employeeId?: string;
     fullName: string;
     email: string;
     department: string;
@@ -8,6 +9,7 @@ export type BasicInfo = {
 };
 
 export type DetailInfo = {
+    employeeId?: string;
     photo: any;
     type: string;
     location: string;

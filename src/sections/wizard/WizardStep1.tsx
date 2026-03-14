@@ -53,6 +53,8 @@ const WizardStep1 = () => {
     const { role } = useRole();
     const draftRole = `draft_${role}`;
     const storage = getDraft(draftRole);
+    const [loading, setLoading] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
     const [departments, setDepartments] = useState<PropsOption[]>([]);
     const [search, setSearch] = useState('');
     useEffect(() => {
@@ -81,14 +83,24 @@ const WizardStep1 = () => {
         },
         enableReinitialize: true,
         validationSchema: basicInfoSchema,
-        onSubmit: (values: BasicInfo) => {
-            setBasicInfo(values);
-            navigate(`/wizard/step-2?role=${role}`);
+        onSubmit: async (values: BasicInfo) => {
+            try {
+                await setLoading(true);
+                setBasicInfo(values);
+                await new Promise(resolve => {
+                    setTimeout(resolve, 2000);
+                });
+                navigate(`/wizard/step-2?role=${role}`);
+            } catch (error: any) {
+                setErrorMessage(error);
+            } finally {
+                setLoading(false);
+            }
         },
     });
     const { handleSubmit, errors, touched, isValid, values } = formik;
 
-    const debouncedValues = useDebounce(formik.values, 2000);
+    const debouncedValues = useDebounce(formik.values, 500);
 
     useEffect(() => {
         if (debouncedValues) {
@@ -102,6 +114,9 @@ const WizardStep1 = () => {
     return (
         <Page title="Wizard Step-1 | Basic Info">
             <div className="wrapper">
+                {errorMessage && (
+                    <div className="text-error">{errorMessage}</div>
+                )}
                 <FormikProvider value={formik}>
                     <Form onSubmit={handleSubmit} style={{ width: '60%' }}>
                         <Textfield
@@ -126,20 +141,18 @@ const WizardStep1 = () => {
                         />
                         <TextfieldAutocomplete
                             options={departments || []}
-                            placeholder={values.department}
-                            defaultText={values.department}
+                            name="department"
+                            defaultVal={values.department}
+                            onSearch={(value: string) => {
+                                setSearch(value);
+                            }}
+                            onSelected={(value: string) => {
+                                formik.setFieldValue('department', value);
+                            }}
                             contentBefore={
                                 <Icon icon="mingcute:department-fill" />
                             }
-                            onChange={(data: string) => setSearch(data)}
-                            onSelected={(data: string) =>
-                                formik.setFieldValue('department', data)
-                            }
                             fullWidth
-                            error={Boolean(
-                                touched.department && errors.department
-                            )}
-                            helperText={touched.department && errors.department}
                         />
                         <SelectOption
                             name="role"
@@ -157,7 +170,8 @@ const WizardStep1 = () => {
                             variant="contained"
                             icon="mdi:content-save"
                             iconSize={16}
-                            disabled={!isValid}
+                            loading={loading}
+                            disabled={!isValid || loading}
                         />
                     </Form>
                 </FormikProvider>

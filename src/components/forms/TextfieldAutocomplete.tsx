@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 interface PropsOption {
     key: any;
@@ -8,49 +8,40 @@ interface PropsOption {
 
 interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
     options: PropsOption[];
-    onChange: any;
-    onSelected: any;
-    contentBefore?: any;
-    contentAfter?: any;
+    name: string;
     fullWidth?: boolean;
     error?: boolean;
     helperText?: any;
-    align?: 'right' | 'left' | 'center' | 'justify' | undefined;
-    defaultText?: string;
-    nullValue?: boolean;
-    nullValueText?: string;
-    defaultValue?: string;
+    align?: 'right' | 'left' | 'center';
+    contentBefore?: any;
+    contentAfter?: any;
+    onSearch: (value: string) => void;
+    onSelected: (value: string) => void;
+    defaultVal?: string;
 }
 
 const TextfieldAutocomplete = ({
-    contentBefore,
-    contentAfter,
+    options,
+    name,
     fullWidth,
     error,
     helperText,
     align,
-    options,
-    defaultText,
-    nullValue,
-    nullValueText,
-    defaultValue,
-    onChange,
+    contentBefore,
+    contentAfter,
+    defaultVal,
+    onSearch,
     onSelected,
     ...props
 }: Props) => {
     const [openOption, setOpenOption] = useState(false);
-    const [selectedValue, setSelectedValue] = useState(defaultValue || '');
-    const [SelectedText, setSelectedText] = useState(defaultText || '');
-    const handleSelectvalue = (value: string, text: string) => {
-        setSelectedText(text);
-        setOpenOption(false);
-        setSelectedValue(value);
-        onSelected(value);
-    };
-    const handleInputChange = (event: any) => {
-        setSelectedText(event.target.value);
-        onChange(event.target.value);
-    };
+    const [selectedText, setSelectedText] = useState('');
+    useEffect(() => {
+        if (defaultVal) {
+            setSelectedText(defaultVal);
+        }
+    }, [defaultVal]);
+
     return (
         <div className="autocomplete">
             <span
@@ -62,68 +53,64 @@ const TextfieldAutocomplete = ({
                 {contentBefore && (
                     <span className="content">{contentBefore}</span>
                 )}
-                <input
-                    className="focus-visible:outline-none"
-                    style={{
-                        width: fullWidth ? '100%' : 'auto',
-                        textAlign: align,
-                    }}
-                    onFocus={() => {
-                        setOpenOption(true);
-                    }}
-                    defaultValue={defaultValue}
-                    value={SelectedText}
-                    onChange={handleInputChange}
-                    {...props}
-                />
                 <div
                     style={{
-                        display: 'none',
+                        width: '80%',
+                        flexGrow: 1,
+                        position: 'relative',
+                        display: 'flex',
                     }}
                 >
-                    <select value={selectedValue}>
-                        {nullValue && nullValueText && (
-                            <option key="null" value="">
-                                {nullValueText}
-                            </option>
-                        )}
-                        {options.map(option => (
-                            <option key={option.key} value={option.value}>
-                                {option.text}
-                            </option>
-                        ))}
-                    </select>
+                    <input
+                        className="focus-visible:outline-none"
+                        style={{
+                            width: fullWidth ? '100%' : 'auto',
+                            textAlign: align,
+                        }}
+                        value={selectedText}
+                        onChange={(e: any) => {
+                            setSelectedText(e.target.value);
+                            onSearch(e.target.value);
+                        }}
+                        onFocus={() => {
+                            setOpenOption(true);
+                        }}
+                        // onBlur={() => setOpenOption(false)}
+                        {...props}
+                    />
                 </div>
                 {contentAfter && (
                     <span className="content">{contentAfter}</span>
                 )}
                 {openOption && (
-                    <div className="autocomplete-option shadow-2">
+                    <div
+                        className="autocomplete-option"
+                        style={{ backgroundColor: '#CFCFCF' }}
+                    >
                         <ul>
-                            {nullValue && nullValueText && (
-                                <button
-                                    onClick={() =>
-                                        handleSelectvalue('', nullValueText)
-                                    }
-                                    type="button"
-                                    key="nodataselect"
-                                >
-                                    <li className="text-text-sm cursor-pointer px-5 py-2 hover:bg-neutral-50">
-                                        {nullValueText}
-                                    </li>
-                                </button>
-                            )}
                             {options.map(data => (
-                                <button
-                                    onClick={() =>
-                                        handleSelectvalue(data.value, data.text)
-                                    }
-                                    type="button"
-                                    key={data.value}
-                                >
-                                    <li className="text-text-sm cursor-pointer px-5 py-2 hover:bg-neutral-50">
-                                        {data.text}
-                                    </li>
+                                <button type="button" key={data.value}>
+                                    <label
+                                        htmlFor={data.value}
+                                        onChange={(e: any) => {
+                                            onSelected(e.target.value);
+                                            setSelectedText(e.target.value);
+                                            setOpenOption(false);
+                                        }}
+                                    >
+                                        <li>
+                                            <input
+                                                type="radio"
+                                                name={name}
+                                                value={data.value}
+                                                id={data.value}
+                                                style={{
+                                                    display: 'none',
+                                                }}
+                                            />{' '}
+                                            {data.text}
+                                        </li>
+                                    </label>
                                 </button>
                             ))}
                         </ul>

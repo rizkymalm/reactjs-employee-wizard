@@ -1,3 +1,4 @@
+import { Icon } from '@iconify/react';
 import { Form, FormikProvider, useFormik } from 'formik';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -13,9 +14,10 @@ import Page from '../../components/Page';
 import { useDebounce } from '../../hooks/useDebounce';
 import { useRole } from '../../hooks/useRole';
 import type { DetailInfo } from '../../lib/types';
-import { postBasicInfo } from '../../services/basicInfo.service';
+import { getBasicInfo, postBasicInfo } from '../../services/basicInfo.service';
 import { getLocation, postDetail } from '../../services/detail.service';
 import { clearDraft, getDraft, saveDraft } from '../../utils/draftStorage';
+import { generateEmployeeId } from '../../utils/helpers';
 import { detailInfoSchema } from '../../utils/validation';
 
 interface PropsOption {
@@ -73,7 +75,25 @@ const WizardStep2 = () => {
         }
         getLocationData();
     }, [search]);
-
+    const getId = async () => {
+        const data = await getBasicInfo({
+            'department:eq': storage.basicInfo.department,
+        });
+        const id = await generateEmployeeId(
+            storage.basicInfo.department,
+            data.length
+        );
+        saveDraft(draftRole, {
+            basicInfo: {
+                ...storage.basicInfo,
+                employeeId: id,
+            },
+            detail: {
+                ...storage.detail,
+                employeeId: id,
+            },
+        });
+    };
     const formik = useFormik({
         initialValues: storage.detail ?? {
             photo: '',
@@ -86,6 +106,7 @@ const WizardStep2 = () => {
         onSubmit: async (values: DetailInfo) => {
             try {
                 setLoading(true);
+                await getId();
                 await postBasicInfo(storage.basicInfo);
                 await new Promise(resolve => {
                     setTimeout(resolve, 2000);
@@ -102,7 +123,6 @@ const WizardStep2 = () => {
     });
     const { handleSubmit, errors, touched, isValid, values } = formik;
     const debouncedValues = useDebounce(formik.values, 2000);
-
     useEffect(() => {
         if (debouncedValues) {
             const draftStorage = getDraft(draftRole);
@@ -134,19 +154,20 @@ const WizardStep2 = () => {
                             helperText={touched.type && errors.type}
                             onChange={formik.handleChange}
                             defaultValue={values.type}
+                            contentBefore={<Icon icon="hugeicons:new-job" />}
                         />
                         <TextfieldAutocomplete
-                            name="location"
                             options={location || []}
-                            placeholder={values.location}
-                            defaultText={values.location}
-                            onChange={(data: string) => setSearch(data)}
-                            onSelected={(data: string) =>
-                                formik.setFieldValue('location', data)
-                            }
+                            name="location"
+                            defaultVal={values.location}
+                            onSearch={(value: string) => {
+                                setSearch(value);
+                            }}
+                            onSelected={(value: string) => {
+                                formik.setFieldValue('location', value);
+                            }}
+                            contentBefore={<Icon icon="mdi:map-marker" />}
                             fullWidth
-                            error={Boolean(touched.location && errors.location)}
-                            helperText={touched.location && errors.location}
                         />
                         <TextfieldArea
                             name="notes"
@@ -158,12 +179,24 @@ const WizardStep2 = () => {
                         />
                         <Button
                             type="submit"
-                            text={loading ? 'loading' : 'Submit Data'}
+                            text="Submit Data"
                             size="md"
                             variant="contained"
                             icon="mdi:content-save"
                             iconSize={16}
+                            loading={loading}
                             disabled={!isValid || loading}
+                        />
+                        <Button
+                            type="button"
+                            text="Reset"
+                            size="md"
+                            variant="contained"
+                            icon="mdi:content-save"
+                            iconSize={16}
+                            loading={loading}
+                            disabled={!isValid}
+                            onClick={() => clearDraft(draftRole)}
                         />
                     </Form>
                 </FormikProvider>

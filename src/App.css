@@ -4,6 +4,14 @@
   text-align: center;
 }
 
+:root {
+  --primary: #22C55E;
+  --primary-hover: rgba(34, 197, 94, .2);
+  --muted: #CFCFCF;
+  --text-dark: #1C1C1E;
+  --text-light: #F5F5F7;
+}
+
 .logo {
   height: 6em;
   padding: 1.5em;
@@ -65,4 +73,24 @@
   margin: auto;
   justify-content: center;
   gap: 8px;
+}
+
+.spinner {
+  position: absolute;
+  border: 3px solid rgba(34, 197, 94, .3);
+  border-left-color: var(--primary);
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }

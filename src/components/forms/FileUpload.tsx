@@ -1,7 +1,7 @@
 import '../../styles/form.css';
 
 import { Icon } from '@iconify/react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { convertToBase64 } from '../../utils/convertbase64';
 
@@ -19,13 +19,15 @@ const FileUpload = ({
     defaultImage,
     ...props
 }: Props) => {
-    const [imagePreview, setImagePreview] = useState<string | null>(
-        defaultImage || null
-    );
+    const [imagePreview, setImagePreview] = useState<string | null>(null);
+    useEffect(() => {
+        if (defaultImage) {
+            setImagePreview(defaultImage);
+        }
+    }, [defaultImage]);
     const handleChange = async (event: any) => {
         const file = event.target.files[0];
         if (file) {
-            // const fileURL = URL.createObjectURL(file);
             const base64 = await convertToBase64(file);
             setImagePreview(base64);
             onSelected(base64);

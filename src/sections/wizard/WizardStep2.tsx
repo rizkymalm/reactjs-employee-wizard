@@ -1,5 +1,6 @@
 import { Form, FormikProvider, useFormik } from 'formik';
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { Button } from '../../components/buttons';
 import {
@@ -12,8 +13,9 @@ import Page from '../../components/Page';
 import { useDebounce } from '../../hooks/useDebounce';
 import { useRole } from '../../hooks/useRole';
 import type { DetailInfo } from '../../lib/types';
+import { postBasicInfo } from '../../services/basicInfo.service';
 import { getLocation, postDetail } from '../../services/detail.service';
-import { getDraft, saveDraft } from '../../utils/draftStorage';
+import { clearDraft, getDraft, saveDraft } from '../../utils/draftStorage';
 import { detailInfoSchema } from '../../utils/validation';
 
 interface PropsOption {
@@ -46,9 +48,12 @@ const employementType = [
 ];
 
 const WizardStep2 = () => {
+    const navigate = useNavigate();
     const { role } = useRole();
     const draftRole = `draft_${role}`;
-    const draftStorage = getDraft(draftRole);
+    const storage = getDraft(draftRole);
+    const [loading, setLoading] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
     const [location, setLocation] = useState<PropsOption[]>([]);
     const [search, setSearch] = useState('');
     useEffect(() => {
@@ -70,15 +75,29 @@ const WizardStep2 = () => {
     }, [search]);
 
     const formik = useFormik({
-        initialValues: draftStorage || {
+        initialValues: storage.detail ?? {
             photo: '',
             type: '',
             location: '',
             notes: '',
         },
+        enableReinitialize: true,
         validationSchema: detailInfoSchema,
-        onSubmit: (values: DetailInfo) => {
-            postDetail(values);
+        onSubmit: async (values: DetailInfo) => {
+            try {
+                setLoading(true);
+                await postBasicInfo(storage.basicInfo);
+                await new Promise(resolve => {
+                    setTimeout(resolve, 2000);
+                });
+                await postDetail(values);
+                clearDraft(draftRole);
+                navigate(`/employee?role=${role}`);
+            } catch (error: any) {
+                setErrorMessage(error);
+            } finally {
+                setLoading(false);
+            }
         },
     });
     const { handleSubmit, errors, touched, isValid, values } = formik;
@@ -86,14 +105,19 @@ const WizardStep2 = () => {
 
     useEffect(() => {
         if (debouncedValues) {
-            saveDraft(draftRole, debouncedValues);
+            const draftStorage = getDraft(draftRole);
+            saveDraft(draftRole, {
+                ...draftStorage,
+                detail: debouncedValues,
+            });
         }
-
-        // console.log('Draft saved:', draftStorage);
     }, [debouncedValues]);
     return (
         <Page title="Wizard Step-2 | Basic Info">
             <div className="wrapper">
+                {errorMessage && (
+                    <div className="text-error">{errorMessage}</div>
+                )}
                 <FormikProvider value={formik}>
                     <Form onSubmit={handleSubmit} style={{ width: '60%' }}>
                         <FileUpload
@@ -114,6 +138,7 @@ const WizardStep2 = () => {
                         <TextfieldAutocomplete
                             name="location"
                             options={location || []}
+                            placeholder={values.location}
                             defaultText={values.location}
                             onChange={(data: string) => setSearch(data)}
                             onSelected={(data: string) =>
@@ -125,6 +150,7 @@ const WizardStep2 = () => {
                         />
                         <TextfieldArea
                             name="notes"
+                            defaultValue={values.notes}
                             fullWidth
                             onChange={formik.handleChange}
                             error={Boolean(touched.notes && errors.notes)}
@@ -132,12 +158,12 @@ const WizardStep2 = () => {
                         />
                         <Button
                             type="submit"
-                            text="Save Data"
+                            text={loading ? 'loading' : 'Submit Data'}
                             size="md"
                             variant="contained"
                             icon="mdi:content-save"
                             iconSize={16}
-                            disabled={!isValid}
+                            disabled={!isValid || loading}
                         />
                     </Form>
                 </FormikProvider>

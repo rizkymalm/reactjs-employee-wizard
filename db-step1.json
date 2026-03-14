@@ -45,6 +45,20 @@
       "email": "rmm@gmail.com",
       "department": "Engineering",
       "role": "Engineer"
+    },
+    {
+      "id": "0ac5",
+      "fullName": "Rizki Malem",
+      "email": "rizkyamasl2mas@maof.com",
+      "department": "Lending",
+      "role": "Engineer"
+    },
+    {
+      "id": "3d51",
+      "fullName": "Amajida Zahirah",
+      "email": "amajida@gmail.com",
+      "department": "Operations",
+      "role": "Admin"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

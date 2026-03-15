@@ -15,7 +15,7 @@ export async function postDetail(data: any) {
 export async function getDetail(params?: any) {
     const response = await apiFetch({
         baseUrl,
-        endpoint: '/departments',
+        endpoint: '/details',
         method: 'GET',
         params,
     });

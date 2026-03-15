@@ -1,11 +1,22 @@
 import React, { useEffect, useState } from 'react';
 
+// import { getBasicInfo } from '../../services/basicInfo.service';
+import { listBasicInfo } from '../../actions/basicInfo';
+import { detailInfo } from '../../actions/detail';
 import Pagination from '../../components/Pagination';
-import type { BasicInfo } from '../../lib/types';
-import { getBasicInfo } from '../../services/basicInfo.service';
+
+interface PropsEmployee {
+    employeeId: string;
+    fullName: string;
+    email: string;
+    department: string;
+    role: string;
+    location: string;
+    photo: string;
+}
 
 const EmployeeTableList = () => {
-    const [list, setList] = useState([]);
+    const [list, setList] = useState<PropsEmployee[]>([]);
     const [total, setTotal] = useState({
         page: 0,
         field: 0,
@@ -17,19 +28,40 @@ const EmployeeTableList = () => {
     });
     useEffect(() => {
         async function basicInfoList() {
-            const data = await getBasicInfo({
+            await listBasicInfo({
                 _page: params.page,
                 _per_page: params.perPage,
+                callback: async (data: any) => {
+                    setTotal({
+                        page: data.response.pages,
+                        field: data.response.items,
+                    });
+                    const lists = data.response.data;
+                    const arrList: PropsEmployee[] = [];
+                    const promise = lists.map(async (item: any) => {
+                        await detailInfo({
+                            key: 'employeeId',
+                            value: item.employeeId,
+                            callback: (detail: any) => {
+                                arrList.push({
+                                    employeeId: item.employeeId,
+                                    fullName: item.fullName,
+                                    email: item.email,
+                                    department: item.department,
+                                    role: item.role,
+                                    location: detail.response[0].location,
+                                    photo: detail.response[0].photo,
+                                });
+                            },
+                        });
+                    });
+                    await Promise.all(promise);
+                    setList(arrList);
+                },
             });
-            setTotal({
-                page: data.pages,
-                field: data.items,
-            });
-            setList(data.data);
         }
         basicInfoList();
     }, [params]);
-
     return (
         <div
             className="wrapper"
@@ -49,13 +81,33 @@ const EmployeeTableList = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {list.map((data: BasicInfo) => (
+                        {list.map((data: PropsEmployee) => (
                             <tr key={data.email} className="transition-all">
-                                <td align="left">{data.fullName}</td>
-                                <td align="left">{data.email}</td>
+                                <td align="left">
+                                    <div
+                                        style={{
+                                            display: 'flex',
+                                            flexDirection: 'column',
+                                        }}
+                                    >
+                                        <div>{`${data.employeeId} - ${data.fullName}`}</div>
+                                        <div>{data.email}</div>
+                                    </div>
+                                </td>
+                                <td align="left">{data.department}</td>
                                 <td>{data.role}</td>
-                                <td>{data.role}</td>
-                                <td>{data.role}</td>
+                                <td>{data.location}</td>
+                                <td aria-label="employee photo">
+                                    <div
+                                        style={{
+                                            width: '30px',
+                                            height: '30px',
+                                            backgroundImage: `url('${data.photo}')`,
+                                            backgroundSize: 'cover',
+                                            backgroundRepeat: 'no-repeat',
+                                        }}
+                                    />
+                                </td>
                             </tr>
                         ))}
                     </tbody>

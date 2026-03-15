@@ -69,7 +69,7 @@ const WizardStep2 = () => {
         async function getLocationData() {
             const data: PropsOption[] = [];
             const loc: any = await getLocation({
-                'name_like': search,
+                name_like: search,
             });
             for (let i = 0; i < loc.length; i++) {
                 data.push({

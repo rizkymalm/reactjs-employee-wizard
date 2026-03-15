@@ -73,7 +73,7 @@ const EmployeeTableList = () => {
                         });
                     },
                 });
-            } else {
+            } else if (role === 'ops') {
                 await listDetailInfoPagination({
                     _page: params.page,
                     _limit: params.perPage,

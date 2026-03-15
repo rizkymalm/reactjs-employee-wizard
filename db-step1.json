@@ -25,6 +25,14 @@
       "department": "Engineering",
       "role": "Admin",
       "employeeId": "ENG-001"
+    },
+    {
+      "id": "fc94",
+      "fullName": "Amajida Zahirah",
+      "email": "azahirah@gmail.com",
+      "department": "Operations",
+      "role": "Engineer",
+      "employeeId": "OPE-001"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

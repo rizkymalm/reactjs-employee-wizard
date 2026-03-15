@@ -83,16 +83,27 @@ const WizardStep2 = () => {
             storage.basicInfo.department,
             data.length
         );
-        saveDraft(draftRole, {
-            basicInfo: {
-                ...storage.basicInfo,
-                employeeId: id,
-            },
-            detail: {
-                ...storage.detail,
-                employeeId: id,
-            },
-        });
+        return id;
+        // saveDraft(draftRole, {
+        //     basicInfo: {
+        //         ...storage.basicInfo,
+        //         employeeId: id,
+        //     },
+        //     detail: {
+        //         ...storage.detail,
+        //         employeeId: id,
+        //     },
+        // });
+        // console.log('draft save', {
+        //     basicInfo: {
+        //         ...storage.basicInfo,
+        //         employeeId: id,
+        //     },
+        //     detail: {
+        //         ...storage.detail,
+        //         employeeId: id,
+        //     },
+        // });
     };
     const formik = useFormik({
         initialValues: storage.detail ?? {
@@ -106,12 +117,20 @@ const WizardStep2 = () => {
         onSubmit: async (values: DetailInfo) => {
             try {
                 setLoading(true);
-                await getId();
-                await postBasicInfo(storage.basicInfo);
+                const id = await getId();
+                const dataBasicInfo = {
+                    ...storage.basicInfo,
+                    employeeId: id,
+                };
+                const dataDetail = {
+                    ...values,
+                    employeeId: id,
+                };
+                await postBasicInfo(dataBasicInfo);
                 await new Promise(resolve => {
                     setTimeout(resolve, 2000);
                 });
-                await postDetail(values);
+                await postDetail(dataDetail);
                 clearDraft(draftRole);
                 navigate(`/employee?role=${role}`);
             } catch (error: any) {
@@ -153,7 +172,7 @@ const WizardStep2 = () => {
                             error={Boolean(touched.type && errors.type)}
                             helperText={touched.type && errors.type}
                             onChange={formik.handleChange}
-                            defaultValue={storage.detail?.type}
+                            defaultVal={storage.detail?.type}
                             contentBefore={<Icon icon="hugeicons:new-job" />}
                         />
                         <TextfieldAutocomplete

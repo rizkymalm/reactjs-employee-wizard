@@ -1,16 +1,8 @@
 {
     "rewrites": [
         {
-            "source": "/api/step1/(.*)",
-            "destination": "/api/step1.cjs"
-        },
-        {
-            "source": "/api/step2/(.*)",
-            "destination": "/api/step2.cjs"
-        },
-        {
             "source": "/(.*)",
-            "destination": "/"
+            "destination": "/index.html"
         }
     ]
 }

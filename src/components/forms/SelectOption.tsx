@@ -17,6 +17,7 @@ interface Props extends React.SelectHTMLAttributes<HTMLSelectElement> {
     nullValue?: boolean;
     nullValueText?: string;
     contentBefore?: any;
+    defaultVal?: string | undefined;
 }
 
 const SelectOption = ({
@@ -28,6 +29,7 @@ const SelectOption = ({
     nullValue,
     nullValueText,
     contentBefore,
+    defaultVal,
     ...props
 }: Props) => {
     const selectId = useId();
@@ -52,7 +54,11 @@ const SelectOption = ({
                         </option>
                     )}
                     {options.map(option => (
-                        <option key={option.key} value={option.value}>
+                        <option
+                            key={option.key}
+                            value={option.value}
+                            selected={option.value === defaultVal}
+                        >
                             {option.text}
                         </option>
                     ))}

@@ -57,6 +57,7 @@ const WizardStep1 = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const [departments, setDepartments] = useState<PropsOption[]>([]);
     const [search, setSearch] = useState('');
+
     useEffect(() => {
         async function getLocationData() {
             const data: PropsOption[] = [];
@@ -74,12 +75,13 @@ const WizardStep1 = () => {
         }
         getLocationData();
     }, [search]);
+
     const formik = useFormik({
-        initialValues: storage.basicInfo ?? {
-            fullName: '',
-            email: '',
-            department: '',
-            role: '',
+        initialValues: {
+            fullName: storage.basicInfo?.fullName || '',
+            email: storage.basicInfo?.email || '',
+            department: storage.basicInfo?.department || '',
+            role: storage.basicInfo?.role || '',
         },
         enableReinitialize: true,
         validationSchema: basicInfoSchema,
@@ -98,7 +100,7 @@ const WizardStep1 = () => {
             }
         },
     });
-    const { handleSubmit, errors, touched, isValid, values } = formik;
+    const { handleSubmit, errors, touched, isValid } = formik;
 
     const debouncedValues = useDebounce(formik.values, 500);
 
@@ -111,6 +113,7 @@ const WizardStep1 = () => {
             });
         }
     }, [debouncedValues]);
+    // console.log(!isValid, dirty)
     return (
         <Page title="Wizard Step-1 | Basic Info">
             <div className="wrapper">
@@ -123,7 +126,7 @@ const WizardStep1 = () => {
                             name="fullName"
                             fullWidth
                             placeholder="Full Name"
-                            defaultValue={values.fullName}
+                            defaultValue={storage.basicInfo?.fullName}
                             contentBefore={<Icon icon="mdi:user" />}
                             onChange={formik.handleChange}
                             error={Boolean(touched.fullName && errors.fullName)}
@@ -133,7 +136,7 @@ const WizardStep1 = () => {
                             name="email"
                             fullWidth
                             placeholder="Email"
-                            defaultValue={values.email}
+                            defaultValue={storage.basicInfo?.email}
                             contentBefore={<Icon icon="mdi:email" />}
                             onChange={formik.handleChange}
                             error={Boolean(touched.email && errors.email)}
@@ -142,7 +145,7 @@ const WizardStep1 = () => {
                         <TextfieldAutocomplete
                             options={departments || []}
                             name="department"
-                            defaultVal={values.department}
+                            defaultVal={storage.basicInfo?.department}
                             onSearch={(value: string) => {
                                 setSearch(value);
                             }}
@@ -157,7 +160,7 @@ const WizardStep1 = () => {
                         <SelectOption
                             name="role"
                             options={roleType}
-                            defaultValue={values.role}
+                            defaultVal={storage.basicInfo?.role}
                             contentBefore={<Icon icon="fa7-solid:user-cog" />}
                             error={Boolean(touched.role && errors.role)}
                             helperText={touched.role && errors.role}

@@ -121,7 +121,7 @@ const WizardStep2 = () => {
             }
         },
     });
-    const { handleSubmit, errors, touched, isValid, values } = formik;
+    const { handleSubmit, errors, touched, isValid } = formik;
     const debouncedValues = useDebounce(formik.values, 2000);
     useEffect(() => {
         if (debouncedValues) {
@@ -145,7 +145,7 @@ const WizardStep2 = () => {
                             onSelected={(data: any) =>
                                 formik.setFieldValue('photo', data)
                             }
-                            defaultImage={values.photo}
+                            defaultImage={storage.detail?.photo}
                         />
                         <SelectOption
                             name="type"
@@ -153,13 +153,13 @@ const WizardStep2 = () => {
                             error={Boolean(touched.type && errors.type)}
                             helperText={touched.type && errors.type}
                             onChange={formik.handleChange}
-                            defaultValue={values.type}
+                            defaultValue={storage.detail?.type}
                             contentBefore={<Icon icon="hugeicons:new-job" />}
                         />
                         <TextfieldAutocomplete
                             options={location || []}
                             name="location"
-                            defaultVal={values.location}
+                            defaultVal={storage.detail?.location}
                             onSearch={(value: string) => {
                                 setSearch(value);
                             }}
@@ -171,7 +171,7 @@ const WizardStep2 = () => {
                         />
                         <TextfieldArea
                             name="notes"
-                            defaultValue={values.notes}
+                            defaultValue={storage.detail?.notes}
                             fullWidth
                             onChange={formik.handleChange}
                             error={Boolean(touched.notes && errors.notes)}

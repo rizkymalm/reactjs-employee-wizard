@@ -24,19 +24,19 @@ const EmployeeTableList = () => {
     const [params, setParams] = useState({
         search: '',
         page: 1,
-        perPage: 10,
+        perPage: 2,
     });
     useEffect(() => {
         async function basicInfoList() {
             await listBasicInfo({
                 _page: params.page,
-                _per_page: params.perPage,
+                _limit: params.perPage,
                 callback: async (data: any) => {
                     setTotal({
                         page: data.response.pages,
                         field: data.response.items,
                     });
-                    const lists = data.response.data;
+                    const lists = data.response;
                     const arrList: PropsEmployee[] = [];
                     const promise = lists.map(async (item: any) => {
                         await detailInfo({

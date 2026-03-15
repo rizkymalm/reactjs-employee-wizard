@@ -1,6 +1,6 @@
 import { apiFetch } from '../lib/api';
 
-const baseUrl = 'http://localhost:4002';
+const baseUrl = import.meta.env.VITE_API_STEP2_URL || '';
 
 export async function postDetail(data: any) {
     const response = await apiFetch({

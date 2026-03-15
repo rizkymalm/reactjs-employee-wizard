@@ -2,7 +2,7 @@ import { getBasicInfo } from '../services/basicInfo.service';
 
 interface PropsList {
     _page?: number;
-    _per_page?: number;
+    _limit?: number;
     callback?: (response: any) => void;
 }
 
@@ -37,15 +37,11 @@ export const detailBasicInfo = async ({
     }
 };
 
-export const listBasicInfo = async ({
-    _page,
-    _per_page,
-    callback,
-}: PropsList) => {
+export const listBasicInfo = async ({ _page, _limit, callback }: PropsList) => {
     try {
         const response = await getBasicInfo({
             _page,
-            _per_page,
+            _limit,
         });
         if (callback) {
             callback({

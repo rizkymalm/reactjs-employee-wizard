@@ -15,7 +15,7 @@ interface PropsDetail {
 export const detailInfo = async ({ key, value, callback }: PropsDetail) => {
     try {
         const response = await getDetail({
-            [`${key}:eq`]: value,
+            [`${key}`]: value,
         });
         if (callback) {
             callback({

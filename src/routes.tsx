@@ -27,7 +27,7 @@ export default function Router() {
                                 role === 'admin' ? (
                                     <WizardStep1 />
                                 ) : (
-                                    <Navigate to="/employee" />
+                                    <Navigate to="/wizard/step-2" />
                                 ),
                         },
                         {

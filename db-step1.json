@@ -33,6 +33,22 @@
       "department": "Operations",
       "role": "Engineer",
       "employeeId": "OPE-001"
+    },
+    {
+      "fullName": "John Doe",
+      "email": "johndoe@gmail.com",
+      "department": "Funding",
+      "role": "Admin",
+      "employeeId": "FUN-003",
+      "id": "nIszv7w"
+    },
+    {
+      "fullName": "Jane Do",
+      "email": "janedoe@gmail.com",
+      "department": "Funding",
+      "role": "Engineer",
+      "employeeId": "FUN-004",
+      "id": "aB4Ui4O"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

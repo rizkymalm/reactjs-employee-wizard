@@ -2,7 +2,7 @@ import { getDetail } from '../services/detail.service';
 
 interface PropsList {
     _page?: number;
-    _per_page?: number;
+    _limit?: number;
     callback?: (response: any) => void;
 }
 
@@ -33,16 +33,35 @@ export const detailInfo = async ({ key, value, callback }: PropsDetail) => {
     }
 };
 
-export const listDetailInfo = async ({
+export const listDetailInfoPagination = async ({
     _page,
-    _per_page,
+    _limit,
     callback,
 }: PropsList) => {
     try {
         const response = await getDetail({
             _page,
-            _per_page,
+            _limit,
         });
+        if (callback) {
+            callback({
+                message: 'success',
+                response,
+            });
+        }
+    } catch (error) {
+        if (callback) {
+            callback({
+                message: 'error',
+                data: error,
+            });
+        }
+    }
+};
+
+export const listDetailInfo = async ({ callback }: PropsList) => {
+    try {
+        const response = await getDetail();
         if (callback) {
             callback({
                 message: 'success',

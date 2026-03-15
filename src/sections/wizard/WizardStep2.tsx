@@ -84,26 +84,6 @@ const WizardStep2 = () => {
             data.length
         );
         return id;
-        // saveDraft(draftRole, {
-        //     basicInfo: {
-        //         ...storage.basicInfo,
-        //         employeeId: id,
-        //     },
-        //     detail: {
-        //         ...storage.detail,
-        //         employeeId: id,
-        //     },
-        // });
-        // console.log('draft save', {
-        //     basicInfo: {
-        //         ...storage.basicInfo,
-        //         employeeId: id,
-        //     },
-        //     detail: {
-        //         ...storage.detail,
-        //         employeeId: id,
-        //     },
-        // });
     };
     const formik = useFormik({
         initialValues: storage.detail ?? {
@@ -117,16 +97,19 @@ const WizardStep2 = () => {
         onSubmit: async (values: DetailInfo) => {
             try {
                 setLoading(true);
-                const id = await getId();
-                const dataBasicInfo = {
-                    ...storage.basicInfo,
-                    employeeId: id,
-                };
+                let id = '';
+                if (role === 'admin') {
+                    id = await getId();
+                    const dataBasicInfo = {
+                        ...storage.basicInfo,
+                        employeeId: id,
+                    };
+                    await postBasicInfo(dataBasicInfo);
+                }
                 const dataDetail = {
                     ...values,
                     employeeId: id,
                 };
-                await postBasicInfo(dataBasicInfo);
                 await new Promise(resolve => {
                     setTimeout(resolve, 2000);
                 });
@@ -149,6 +132,7 @@ const WizardStep2 = () => {
                 ...draftStorage,
                 detail: debouncedValues,
             });
+            // console.log('save draft', getDraft(draftRole));
         }
     }, [debouncedValues]);
     return (

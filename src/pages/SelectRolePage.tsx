@@ -23,7 +23,6 @@ const SelectRolePage = () => {
                     flexDirection: 'column',
                     justifyContent: 'center',
                     gap: '8px',
-                    background: 'red',
                 }}
             >
                 <h2>Select Your Role</h2>

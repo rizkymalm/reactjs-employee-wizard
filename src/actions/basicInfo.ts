@@ -37,7 +37,30 @@ export const detailBasicInfo = async ({
     }
 };
 
-export const listBasicInfo = async ({ _page, _limit, callback }: PropsList) => {
+export const listBasicInfo = async ({ callback }: PropsList) => {
+    try {
+        const response = await getBasicInfo();
+        if (callback) {
+            callback({
+                message: 'success',
+                response,
+            });
+        }
+    } catch (error) {
+        if (callback) {
+            callback({
+                message: 'error',
+                data: error,
+            });
+        }
+    }
+};
+
+export const listBasicInfoPagination = async ({
+    _page,
+    _limit,
+    callback,
+}: PropsList) => {
     try {
         const response = await getBasicInfo({
             _page,

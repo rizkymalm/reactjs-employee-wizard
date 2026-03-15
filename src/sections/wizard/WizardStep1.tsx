@@ -121,7 +121,7 @@ const WizardStep1 = () => {
                     <div className="text-error">{errorMessage}</div>
                 )}
                 <FormikProvider value={formik}>
-                    <Form onSubmit={handleSubmit} style={{ width: '60%' }}>
+                    <Form onSubmit={handleSubmit} className="form-wrapper">
                         <Textfield
                             name="fullName"
                             fullWidth

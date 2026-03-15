@@ -17,11 +17,13 @@ const SelectRolePage = () => {
         <Page title="Select Role">
             <div
                 style={{
+                    maxWidth: '100%',
                     width: '100%',
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'center',
                     gap: '8px',
+                    background: 'red',
                 }}
             >
                 <h2>Select Your Role</h2>

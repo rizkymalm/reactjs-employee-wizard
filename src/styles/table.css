@@ -10,6 +10,8 @@
 .table-container {
     position: relative;
     width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
 }
 
 .table-wrapper {
@@ -53,6 +55,8 @@
     background-color: var(--text-light);
     padding-top: 8px;
     padding-bottom: 8px;
+    width: 100%;
+    max-width: 100%;
 }
 
 .pagination-row-selection {

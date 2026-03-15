@@ -1,0 +1,32 @@
+/* Medium devices (laptops/desktops, 1199px and down) */
+@media screen and (max-width: 1500px) {
+    .container {
+        padding: 2rem;
+    }
+    .form-wrapper {
+        width: 60%;
+    }
+}
+
+/* Small devices (tablets, 767px and down) */
+@media screen and (max-width: 767px) {
+    .container {
+        padding: 2rem 10px;
+        max-width: 100%;
+    }
+    .form-wrapper {
+        width: 100%;
+    }
+}
+
+/* Extra small devices (phones, 599px and down) */
+@media screen and (max-width: 599px) {
+    .container {
+        padding: 2rem 10px;
+        max-width: 100%;
+    }
+
+    .form-wrapper {
+        width: 100%;
+    }
+}

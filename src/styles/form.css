@@ -11,6 +11,10 @@
     border-color: var(--error) !important;
 }
 
+.form-wrapper{
+    padding: 0 20px;
+}
+
 .helpertext {
     font-size: 10px;
     font-weight: 500;

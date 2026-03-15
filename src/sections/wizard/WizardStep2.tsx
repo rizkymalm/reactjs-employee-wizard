@@ -158,7 +158,7 @@ const WizardStep2 = () => {
                     <div className="text-error">{errorMessage}</div>
                 )}
                 <FormikProvider value={formik}>
-                    <Form onSubmit={handleSubmit} style={{ width: '60%' }}>
+                    <Form onSubmit={handleSubmit} className="form-wrapper">
                         <FileUpload
                             name="photo"
                             onSelected={(data: any) =>

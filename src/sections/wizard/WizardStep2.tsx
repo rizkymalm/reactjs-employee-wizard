@@ -58,11 +58,18 @@ const WizardStep2 = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const [location, setLocation] = useState<PropsOption[]>([]);
     const [search, setSearch] = useState('');
+    const initValue: DetailInfo = {
+        photo: storage.detail.photo,
+        type: storage.detail.type,
+        location: storage.detail.location,
+        notes: storage.detail.notes,
+    };
+
     useEffect(() => {
         async function getLocationData() {
             const data: PropsOption[] = [];
             const loc: any = await getLocation({
-                'name:contains': search,
+                'name_like': search,
             });
             for (let i = 0; i < loc.length; i++) {
                 data.push({
@@ -86,14 +93,9 @@ const WizardStep2 = () => {
         return id;
     };
     const formik = useFormik({
-        initialValues: storage.detail ?? {
-            photo: '',
-            type: '',
-            location: '',
-            notes: '',
-        },
-        enableReinitialize: true,
+        initialValues: initValue,
         validationSchema: detailInfoSchema,
+        enableReinitialize: true,
         onSubmit: async (values: DetailInfo) => {
             try {
                 setLoading(true);
@@ -132,7 +134,6 @@ const WizardStep2 = () => {
                 ...draftStorage,
                 detail: debouncedValues,
             });
-            // console.log('save draft', getDraft(draftRole));
         }
     }, [debouncedValues]);
     return (
@@ -148,7 +149,7 @@ const WizardStep2 = () => {
                             onSelected={(data: any) =>
                                 formik.setFieldValue('photo', data)
                             }
-                            defaultImage={storage.detail?.photo}
+                            defaultImage={formik.values.photo}
                         />
                         <SelectOption
                             name="type"
@@ -156,13 +157,13 @@ const WizardStep2 = () => {
                             error={Boolean(touched.type && errors.type)}
                             helperText={touched.type && errors.type}
                             onChange={formik.handleChange}
-                            defaultVal={storage.detail?.type}
+                            defaultVal={formik.values.type}
                             contentBefore={<Icon icon="hugeicons:new-job" />}
                         />
                         <TextfieldAutocomplete
                             options={location || []}
                             name="location"
-                            defaultVal={storage.detail?.location}
+                            defaultVal={formik.values.location}
                             onSearch={(value: string) => {
                                 setSearch(value);
                             }}
@@ -174,7 +175,7 @@ const WizardStep2 = () => {
                         />
                         <TextfieldArea
                             name="notes"
-                            defaultValue={storage.detail?.notes}
+                            defaultValue={formik.values.notes}
                             fullWidth
                             onChange={formik.handleChange}
                             error={Boolean(touched.notes && errors.notes)}
@@ -189,17 +190,6 @@ const WizardStep2 = () => {
                             iconSize={16}
                             loading={loading}
                             disabled={!isValid || loading}
-                        />
-                        <Button
-                            type="button"
-                            text="Reset"
-                            size="md"
-                            variant="contained"
-                            icon="mdi:content-save"
-                            iconSize={16}
-                            loading={loading}
-                            disabled={!isValid}
-                            onClick={() => clearDraft(draftRole)}
                         />
                     </Form>
                 </FormikProvider>

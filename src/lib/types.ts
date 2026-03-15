@@ -13,7 +13,7 @@ export type DetailInfo = {
     photo: any;
     type: string;
     location: string;
-    notes: string;
+    notes?: string;
 };
 
 export type WizardState = {

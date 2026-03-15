@@ -84,7 +84,7 @@ const EmployeeTableList = () => {
             }
         }
         basicInfoList();
-    }, [params]);
+    }, [params, role]);
     return (
         <div
             className="wrapper"

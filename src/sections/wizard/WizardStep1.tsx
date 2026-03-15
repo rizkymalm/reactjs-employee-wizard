@@ -12,7 +12,6 @@ import {
 import Page from '../../components/Page';
 import { useDebounce } from '../../hooks/useDebounce';
 import { useRole } from '../../hooks/useRole';
-import { useWizardState } from '../../hooks/useWizardState';
 import type { BasicInfo } from '../../lib/types';
 import { getDepartments } from '../../services/basicInfo.service';
 import { getDraft, saveDraft } from '../../utils/draftStorage';
@@ -49,7 +48,6 @@ const roleType = [
 
 const WizardStep1 = () => {
     const navigate = useNavigate();
-    const { setBasicInfo } = useWizardState();
     const { role } = useRole();
     const draftRole = `draft_${role}`;
     const storage = getDraft(draftRole);
@@ -57,6 +55,12 @@ const WizardStep1 = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const [departments, setDepartments] = useState<PropsOption[]>([]);
     const [search, setSearch] = useState('');
+    const initValue: BasicInfo = {
+        fullName: storage.basicInfo.fullName,
+        email: storage.basicInfo.email,
+        department: storage.basicInfo.department,
+        role: storage.basicInfo.role,
+    };
 
     useEffect(() => {
         async function getLocationData() {
@@ -77,18 +81,12 @@ const WizardStep1 = () => {
     }, [search]);
 
     const formik = useFormik({
-        initialValues: {
-            fullName: storage.basicInfo?.fullName || '',
-            email: storage.basicInfo?.email || '',
-            department: storage.basicInfo?.department || '',
-            role: storage.basicInfo?.role || '',
-        },
+        initialValues: initValue,
         enableReinitialize: true,
         validationSchema: basicInfoSchema,
-        onSubmit: async (values: BasicInfo) => {
+        onSubmit: async () => {
             try {
                 await setLoading(true);
-                setBasicInfo(values);
                 await new Promise(resolve => {
                     setTimeout(resolve, 2000);
                 });
@@ -100,7 +98,7 @@ const WizardStep1 = () => {
             }
         },
     });
-    const { handleSubmit, errors, touched, isValid } = formik;
+    const { handleSubmit, errors, touched, isValid, values } = formik;
 
     const debouncedValues = useDebounce(formik.values, 500);
 
@@ -113,7 +111,6 @@ const WizardStep1 = () => {
             });
         }
     }, [debouncedValues]);
-    // console.log(!isValid, dirty)
     return (
         <Page title="Wizard Step-1 | Basic Info">
             <div className="wrapper">
@@ -126,7 +123,7 @@ const WizardStep1 = () => {
                             name="fullName"
                             fullWidth
                             placeholder="Full Name"
-                            defaultValue={storage.basicInfo?.fullName}
+                            defaultValue={values.fullName}
                             contentBefore={<Icon icon="mdi:user" />}
                             onChange={formik.handleChange}
                             error={Boolean(touched.fullName && errors.fullName)}
@@ -136,7 +133,7 @@ const WizardStep1 = () => {
                             name="email"
                             fullWidth
                             placeholder="Email"
-                            defaultValue={storage.basicInfo?.email}
+                            defaultValue={values.email}
                             contentBefore={<Icon icon="mdi:email" />}
                             onChange={formik.handleChange}
                             error={Boolean(touched.email && errors.email)}
@@ -145,7 +142,7 @@ const WizardStep1 = () => {
                         <TextfieldAutocomplete
                             options={departments || []}
                             name="department"
-                            defaultVal={storage.basicInfo?.department}
+                            defaultVal={values.department}
                             onSearch={(value: string) => {
                                 setSearch(value);
                             }}
@@ -160,7 +157,7 @@ const WizardStep1 = () => {
                         <SelectOption
                             name="role"
                             options={roleType}
-                            defaultVal={storage.basicInfo?.role}
+                            defaultVal={values.role}
                             contentBefore={<Icon icon="fa7-solid:user-cog" />}
                             error={Boolean(touched.role && errors.role)}
                             helperText={touched.role && errors.role}

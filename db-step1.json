@@ -19,36 +19,12 @@
   ],
   "basicInfo": [
     {
-      "id": "1639",
       "fullName": "Rizki Malem",
       "email": "rizkymalm@gmail.com",
-      "department": "Engineering",
-      "role": "Admin",
-      "employeeId": "ENG-001"
-    },
-    {
-      "id": "fc94",
-      "fullName": "Amajida Zahirah",
-      "email": "azahirah@gmail.com",
       "department": "Operations",
-      "role": "Engineer",
-      "employeeId": "OPE-001"
-    },
-    {
-      "fullName": "John Doe",
-      "email": "johndoe@gmail.com",
-      "department": "Funding",
       "role": "Admin",
-      "employeeId": "FUN-003",
-      "id": "nIszv7w"
-    },
-    {
-      "fullName": "Jane Do",
-      "email": "janedoe@gmail.com",
-      "department": "Funding",
-      "role": "Engineer",
-      "employeeId": "FUN-004",
-      "id": "aB4Ui4O"
+      "employeeId": "OPE-001",
+      "id": 1
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

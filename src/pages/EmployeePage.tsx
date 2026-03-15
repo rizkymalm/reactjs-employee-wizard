@@ -5,11 +5,13 @@ import { Button } from '../components/buttons';
 import Page from '../components/Page';
 import { useRole } from '../hooks/useRole';
 import EmployeeTableList from '../sections/employee/EmployeeTableList';
+import { initValue } from '../utils/helpers';
 
 const EmployeePage = () => {
     const { role } = useRole();
     const navigate = useNavigate();
     const handleRedirect = () => {
+        initValue(role);
         navigate(`/wizard/step-1?role=${role}`);
     };
     return (
